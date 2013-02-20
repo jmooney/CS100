@@ -26,7 +26,7 @@ class TransformationGraph(Object):
 
 	def __initVars__(self, **kwArgs):
 		super().__initVars__(**kwArgs)
-		self._rootNode = _Transform()
+		self._rootNode = Transform()
 
 		
 	''''''''''''''''''''''''''''''''''''''''''
@@ -49,7 +49,7 @@ class TransformationGraph(Object):
 		A scene graph node; Contains Entity and Transform Data
 '''
 
-class _Transform(Object):
+class Transform(Object):
 
 	def __initVars__(self, **kwArgs):
 		super().__initVars__(**kwArgs)
@@ -59,12 +59,12 @@ class _Transform(Object):
 		self._children 	= []
 		
 		'''	Transform Data '''
-		self._translate 	= vec()
-		self._gTrans		= vec()
-		self._rotateRads 	= 0.0
-		self._gRotRads      = 0.0
-		self._scale			= 1.0
-		self._gScale		= 1.0
+		self._translate 	= getDictValue(kwArgs, vec(), ['t', 'translate'])
+		self._rotateRads 	= getDictValue(kwArgs, 0.0, ['r', 'rotate'])
+		self._scale			= getDictValue(kwArgs, 1.0, ['s', 'scale'])
+		self._gTrans		= self._translate.copy()
+		self._gRotRads      = self._rotateRads
+		self._gScale		= self._scale
 	
 		'''	Transformable Data	'''
 		self._transformables  = []
@@ -117,19 +117,19 @@ class _Transform(Object):
 	#########################
 	
 	def getTranslation(self):
-		return self._translate.copy()
-	def getSceneTranslation(self):
 		return self._gTrans.copy()
+	def getLocalTranslation(self):
+		return self._translate.copy()
 		
 	def getRotation(self):
-		return self._rotateRads
-	def getSceneRotation(self):
 		return self._gRotRads
+	def getLocalRotation(self):
+		return self._rotateRads
 		
 	def getScale(self):
-		return self._scale
-	def getSceneScale(self):
 		return self._gScale
+	def getLocalScale(self):
+		return self._scale
 		
 		
 	#################################
@@ -137,13 +137,8 @@ class _Transform(Object):
 	#################################
 	
 	def createChildNode(self, **kwArgs):
-		node = _Transform()
+		node = Transform(**kwArgs)
 		node.setParent(self)
-
-		node.translate(getDictValue(kwArgs, vec(), ['t', 'translate']))
-		node.rotate(getDictValue(kwArgs, 0.0, ['r', 'rotate']))
-		node.scale(getDictValue(kwArgs, 1.0, ['s', 'scale']))
-		
 		return node
 		
 		
@@ -163,6 +158,7 @@ class _Transform(Object):
 	def removeTransformable(self, d):
 		self._transformables.remove(d)
 		
+		
 	#################################
 	#		Data Maintenance		#
 	#################################
@@ -170,7 +166,7 @@ class _Transform(Object):
 	def _translateDependents(self):
 		pTrans = ZeroVector
 		if(self._parent):
-			pTrans = self._parent.getSceneTranslation()
+			pTrans = self._parent.getTranslation()
 			
 		newTranslate = self._translate + pTrans
 		oldTranslate = self._gTrans.copy()
@@ -184,7 +180,7 @@ class _Transform(Object):
 	def _rotateDependents(self):
 		pRots = 0.0
 		if(self._parent):
-			pRots = self._parent.getSceneRotation()
+			pRots = self._parent.getRotation()
 			
 		newRot = self._rotateRads + pRots
 		oldRot = self._gRotRads
@@ -198,7 +194,7 @@ class _Transform(Object):
 	def _scaleDependents(self):
 		pScale = 1.0
 		if(self._parent):
-			pScale = self._parent.getSceneScale()
+			pScale = self._parent.getScale()
 			
 		newScale = self._scale * pScale
 		oldScale = self._gScale

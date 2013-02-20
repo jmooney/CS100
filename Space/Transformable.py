@@ -37,11 +37,11 @@ class Transformable(Object):
 		self._localPos		= getDictValue(kwArgs, vec(), ['lp', 'localPos'])
 		self._localRot		= getDictValue(kwArgs, 0.0, ['lr', 'localRot'])
 		self._localScale	= getDictValue(kwArgs, 1.0, ['ls', 'localScale'])
-		
+
 		t = getDictValue(kwArgs, None, ['t', 'transform'])
 		if(t):
 			self.setTransform(t)			
-			
+
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def update(self, dt):
@@ -111,12 +111,12 @@ class Transformable(Object):
 	def _onTransformation(self):
 		self._isTransformed = False
 	def _onTranslation(self, dif):
-		self._worldPos  	= self._localPos + self._transform.getSceneTranslation()
+		self._worldPos  	= self._localPos + self._transform.getTranslation()
 		self._isTransformed = True
 	def _onRotation(self, dif):
-		self._worldRot  	= self._localRot + self._transform.getSceneRotation()
+		self._worldRot  	= self._localRot + self._transform.getRotation()
 		self._isTransformed = True
 	def _onScale(self, dif):
-		self._worldScale 	= self._localScale * self._transform.getSceneScale()
+		self._worldScale 	= self._localScale * self._transform.getScale()
 		self._isTransformed = True
 		

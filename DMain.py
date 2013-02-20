@@ -37,8 +37,10 @@ window 	= pyglet.window.Window()
 tg 		= TransformationGraph.tg = TransformationGraph.TransformationGraph()
 ddm 	= DebugDrawingManager.ddm = DebugDrawingManager.DebugDrawingManager()
 
-cr1 = CollisionRect(t=tg.newTransform(t=vec(200, 200)), w=200, h=185)
-cr2 = CollisionRect(t=tg.newTransform(t=vec(400, 250)), w=15, h=400)
+newTransform = TransformationGraph.Transform
+
+cr1 = CollisionRect(t=newTransform(t=vec(200, 200)), w=200, h=185)
+cr2 = CollisionRect(t=newTransform(t=vec(400, 250)), w=15, h=400)
 
 cr1Color = None
 cr2Color = None
@@ -63,6 +65,7 @@ def update(dt):
 	
 	ddm.drawRect(None, cr1._width, cr1._height, t=cr1.getTransform(), color=cr1Color)
 	ddm.drawRect(None, cr2._width, cr2._height, t=cr2.getTransform(), color=cr2Color)
+
 
 @window.event
 def on_draw():
