@@ -14,46 +14,11 @@
 # Imports
 import math
 
-import Color
-import DebugDrawingManager
-
 from Transformable import Transformable
 
 from Vector import vec
 from Vector import XAxisVector
 from tools import getDictValue
-
-
-#--------------------------------------------------------#
-	
-class GeometryRect(Transformable):
-
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
-		
-		self._width 	= w = getDictValue(kwArgs, 1.0, ['w', 'width'])
-		self._height 	= h = getDictValue(kwArgs, 1.0, ['h', 'height'])
-		self._diagonal 	= vec(w/2, h/2)
-		
-		
-	''''''''''''''''''''''''''''''''''''''
-	
-	#################################
-	#		Data Maintenance		#
-	#################################
-	
-	def _onTranslation(self, dif):
-		super()._onTranslation(dif)
-	
-	def _onRotation(self, dif):
-		super()._onRotation(dif)
-		d = self._diagonal
-		d.x = d.x*math.cos(dif) - d.y*math.sin(dif)
-		d.y = d.x*math.sin(dif) + d.y*math.cos(dif)
-		
-	def _onScale(self, dif):
-		super()._onScale(dif)
-		self._diagonal 	*= dif
 
 
 #-----------------------------------------------#
@@ -66,8 +31,8 @@ class GeometryEllipse(Transformable):
 		a = getDictValue(kwArgs, 1.0, ['a', 'x', 'major'])
 		b = getDictValue(kwArgs, 1.0, ['b', 'y', 'minor'])
 	
-		self._a = vec(a, 0);	self._aLength = a
-		self._b = vec(0, b);	self._bLength = b
+		self._a = vec(a, 0)
+		self._b = vec(0, b)
 		
 		
 	''''''''''''''''''''''''''''''''''''''
@@ -78,24 +43,94 @@ class GeometryEllipse(Transformable):
 	
 	def _onTranslation(self, dif):
 		super()._onTranslation(dif)
+	
 	def _onRotation(self, dif):
 		super()._onRotation(dif)
-		wr = self._worldRot
 		
-		al = self._aLength
-		self._a.x = math.cos(wr)*al
-		self._a.y = math.sin(wr)*al
+		a = self._a;		b = self._b
+		c = math.cos(dif);	s = math.sin(dif)
 		
-		bl = self._bLength
-		bRot = wr+math.pi/2
-		self._b.x = math.cos(bRot)*bl
-		self._b.y = math.sin(bRot)*bl
+		a.x = a.x*c - a.y*s
+		a.y = a.x*s + a.y*c
+		
+		b.x = b.x*c - b.y*s
+		b.y = b.x*s + b.y*c
+		
 	def _onScale(self, dif):
 		super()._onScale(dif)
-		self._a *= dif;	self._aLength*=dif
-		self._b *= dif;	self._bLength*=dif
-		
+		self._a *= dif;	self._b *= dif;
 
+
+#--------------------------------------------------------#
+	
+class GeometryRect(Transformable):
+
+	def __initVars__(self, **kwArgs):
+		super().__initVars__(**kwArgs)
+
+		self._width 	= w = getDictValue(kwArgs, 1.0, ['w', 'width'])
+		self._height 	= h = getDictValue(kwArgs, 1.0, ['h', 'height'])
+		self._diagonal 	= vec(w/2, h/2)
+
+
+	''''''''''''''''''''''''''''''''''''''
+	
+	#################################
+	#		Data Maintenance		#
+	#################################
+	
+	def _onTranslation(self, dif):
+		super()._onTranslation(dif)
+	
+	def _onRotation(self, dif):
+		super()._onRotation(dif)
+		
+		d = self._diagonal
+		c = math.cos(dif);	s = math.sin(dif)
+		
+		d.x = d.x*c - d.y*s
+		d.y = d.x*s + d.y*c
+		
+	def _onScale(self, dif):
+		super()._onScale(dif)
+		self._diagonal 	*= dif
+
+
+#------------------------------------------------#
+
+class GeometryCircle(Transformable):
+	
+	def __init__(self, radius, **kwArgs):
+		self._radius = radius
+		super().__init__(**kwArgs)
+		
+	
+	''''''''''''''''''''''''''''''''''''''''''
+	
+	def _onScale(self, dif):
+		super()._onScale(dif)
+		self._radius *= dif
+
+
+#------------------------------------------------#
+
+class GeometryTriangle(Transformable):
+
+	def __initVars__(self, **kwArgs):
+		super().__initVars__(**kwArgs)
+		self._pointVecs = getDictValue(kwArgs, None, ['ps', 'points'], True)
+	
+	
+	''''''''''''''''''''''''''''''''''''''''''
+	
+	def _onRotation(self, dif):
+		super._onRotation(dif)
+		c = math.cos(dif);	s = math.sin(dif)
+		
+		for p in self._pointVecs:
+			p.x = p.x*c - p.x*s
+			p.y = p.x*s + p.y*c
+		
 		
 #------------------------------------------------#
 
@@ -108,12 +143,10 @@ class GeometryLine(Transformable):
 		direc  	= getDictValue(kwArgs, None, ['d', 'direc', 'direction'])
 
 		if length and direc:
-			self._length = length
 			self._end = self._worldPos + direc*length
 		else:
 			self._end = getDictValue(kwArgs, vec(), ['e', 'end'], True)
-			self._length = (self._end-self._worldPos).length()
-		
+
 		
 	def __initData__(self, **kwArgs):
 		kwArgs['localRot'] = self._end.getAngleTo(XAxisVector)
@@ -121,19 +154,18 @@ class GeometryLine(Transformable):
 		
 
 	''''''''''''''''''''''''''''''''''''''''''
-	
-	def _onTranslation(self, dif):
-		super()._onTranslation(dif)
-		self._end += dif
-	def _onRotation(self, dif):
-		super()._onRotation(dif)
-		wr = self._worldRot
 		
-		self._end.x = math.cos(wr)*self._length + self._worldPos.x
-		self._end.y = math.sin(wr)*self._length + self._worldPos.y
+	def _onRotation(self, dif):
+		super()._onRotation(dif)		
+		
+		e = self._end
+		c = math.cos(dif);	s = math.sin(dif)
+		
+		e.x = e.x*c - e.y*s
+		e.y = e.x*s + e.y*c
+		
 	def _onScale(self, dif):
 		super()._onScale(dif)
-		self._length	*= dif
-		self._end 		= (self._end - self._worldPos)*dif + self._worldPos
+		self._end*=dif
 
 #------------------------------------------------#

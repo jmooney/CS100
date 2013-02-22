@@ -69,6 +69,7 @@ class Transform(Object):
 		'''	Transformable Data	'''
 		self._transformables  = []
 	
+	
 	''''''''''''''''''''''''''''''''''''''''''
 		
 	def destroy(self):
@@ -80,7 +81,9 @@ class Transform(Object):
 		self._transformables = []
 		self._children = []
 		
-		
+	
+	''''''''''''''''''''''''''''''''''''''''''
+	
 	#############################
 	#		Transforms			#
 	#############################
@@ -111,6 +114,9 @@ class Transform(Object):
 	def setScale(self, v):
 		self._scale = v
 		self._scaleDependents()
+	
+
+	''''''''''''''''''''''''''''''''''''''''''
 		
 	#########################
 	#		Accessors		#
@@ -131,18 +137,28 @@ class Transform(Object):
 	def getLocalScale(self):
 		return self._scale
 		
-		
-	#################################
-	#		Common Node Operations	#
-	#################################
 	
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	#####################################
+	#		Common Node Operations		#
+	#####################################
+	
+	def getInverse(self):
+		return Transform(t=-self._gTrans, r=-self._gRotRads, s=-self._gScale)
+		
 	def createChildNode(self, **kwArgs):
 		node = Transform(**kwArgs)
 		node.setParent(self)
 		return node
 		
 		
-	'''	Transformable Operations	'''
+	''''''''''''''''''''''''''''''''''''''''''''''''
+
+	#########################################
+	#		Transformable Operations		#
+	#########################################
+	
 	def addTransformable(self, d):
 		self._transformables.append(d)
 		
@@ -158,7 +174,9 @@ class Transform(Object):
 	def removeTransformable(self, d):
 		self._transformables.remove(d)
 		
-		
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
 	#################################
 	#		Data Maintenance		#
 	#################################
@@ -211,7 +229,9 @@ class Transform(Object):
 		self._translateDependents()
 		self._rotateDependents()
 		self._scaleDependents()
-		
+	
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''
 		
 	#################################
 	#		Noding Operations		#
