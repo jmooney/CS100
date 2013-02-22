@@ -23,17 +23,14 @@ from tools import getDictValue
 
 #-----------------------------------------------#
 
-class GeometryEllipse(Transformable):
+class GeometricEllipse(Transformable):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
-		
-		a = getDictValue(kwArgs, 1.0, ['a', 'x', 'major'])
-		b = getDictValue(kwArgs, 1.0, ['b', 'y', 'minor'])
-	
+	def __init__(self, a, b):
 		self._a = vec(a, 0)
 		self._b = vec(0, b)
-		
+
+		super().__init__(**kwArgs)		
+
 		
 	''''''''''''''''''''''''''''''''''''''
 	
@@ -56,6 +53,8 @@ class GeometryEllipse(Transformable):
 		b.x = b.x*c - b.y*s
 		b.y = b.x*s + b.y*c
 		
+		return c, s
+		
 	def _onScale(self, dif):
 		super()._onScale(dif)
 		self._a *= dif;	self._b *= dif;
@@ -63,14 +62,14 @@ class GeometryEllipse(Transformable):
 
 #--------------------------------------------------------#
 	
-class GeometryRect(Transformable):
+class GeometricRect(Transformable):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
-
+	def __init__(self, w, h, **kwArgs):
 		self._width 	= w = getDictValue(kwArgs, 1.0, ['w', 'width'])
 		self._height 	= h = getDictValue(kwArgs, 1.0, ['h', 'height'])
 		self._diagonal 	= vec(w/2, h/2)
+		
+		super().__init__(**kwArgs)
 
 
 	''''''''''''''''''''''''''''''''''''''
@@ -98,7 +97,7 @@ class GeometryRect(Transformable):
 
 #------------------------------------------------#
 
-class GeometryCircle(Transformable):
+class GeometricCircle(Transformable):
 	
 	def __init__(self, radius, **kwArgs):
 		self._radius = radius
@@ -114,12 +113,12 @@ class GeometryCircle(Transformable):
 
 #------------------------------------------------#
 
-class GeometryTriangle(Transformable):
+class GeometricTriangle(Transformable):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __init__(self, **kwArgs):
 		self._pointVecs = getDictValue(kwArgs, None, ['ps', 'points'], True)
-	
+		super().__init__(**kwArgs)
+		
 	
 	''''''''''''''''''''''''''''''''''''''''''
 	
@@ -134,7 +133,7 @@ class GeometryTriangle(Transformable):
 		
 #------------------------------------------------#
 
-class GeometryLine(Transformable):
+class GeometricLine(Transformable):
 
 	def __initVars__(self, **kwArgs):
 		super().__initVars__(**kwArgs)
