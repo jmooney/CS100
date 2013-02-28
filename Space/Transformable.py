@@ -24,7 +24,7 @@ class Transformable(Object):
 		
 		self._worldPos 		= vec()
 		self._worldRot 		= 0.0
-		self._worldScale 	= 1.0
+		self._worldScale 	= vec(1, 1)
 		
 		self._isTransformed = False
 		self._transform 	= None
@@ -36,7 +36,7 @@ class Transformable(Object):
 		
 		self._localPos		= getDictValue(kwArgs, vec(), ['lp', 'localPos'])
 		self._localRot		= getDictValue(kwArgs, 0.0, ['lr', 'localRot'])
-		self._localScale	= getDictValue(kwArgs, 1.0, ['ls', 'localScale'])
+		self._localScale	= getDictValue(kwArgs, vec(1, 1), ['ls', 'localScale'])
 
 		t = getDictValue(kwArgs, None, ['t', 'transform'])
 		if(t):
@@ -79,8 +79,12 @@ class Transformable(Object):
 		
 	def scale(self, s):
 		self._transform.scale(s)
+	def scale2f(self, x, y):
+		self._transform.scale2f(x, y)
 	def setScale(self, s):
 		self._transform.setScale(s)
+	def setScale2f(self, x, y):
+		self._transform.setScale2f(x, y)
 
 		
 	#############################
@@ -101,7 +105,7 @@ class Transformable(Object):
 		
 		self._worldPos 		= vec()
 		self._worldRot		= 0.0
-		self._worldScale	= 1.0
+		self._worldScale	= vec(1,1)
 		
 		
 	#################################

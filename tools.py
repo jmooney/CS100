@@ -11,6 +11,11 @@
 		A set of handy-dandy tools for common python functionality 
 '''
 
+import math
+twoPi = 2*math.pi
+pi2 = math.pi/2
+
+
 def nearEq(f1, f2, de=.000001):
 	dif = abs(f2-f1)
 	return dif <= de

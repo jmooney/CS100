@@ -16,61 +16,46 @@ import pyglet
 import sys
 import os
 
+from pyglet.graphics import GL_LINES
+
+
 '''		Set Search Directory	'''
 for root, direcs, files in os.walk(os.getcwd()):
 	for direc in direcs:
 		sys.path.append(os.path.join(root, direc))
 
 
-# Local Imports
-import TransformationGraph
-import DebugDrawingManager
+# Imports
 import Color
 
-from CollisionPrimitives import *
+from Renderer import Renderer
+from TransformationGraph import Transform
+
+from SceneObject import SceneObject
+from DiscretePrimitives import *
 from Vector import vec
 
-#-------------------------------------------------------#
-	
+#-------------------------------------------------------#	
 
-window 	= pyglet.window.Window()
-tg 		= TransformationGraph.tg = TransformationGraph.TransformationGraph()
-ddm 	= DebugDrawingManager.ddm = DebugDrawingManager.DebugDrawingManager()
+window 			= pyglet.window.Window(800, 600)
+winDimensions 	= [800, 600]
 
-newTransform = TransformationGraph.Transform
+rendMan = Renderer(winSize=winDimensions)
+sg = rendMan.getSceneGraph()
 
-cr1 = CollisionRect(t=newTransform(t=vec(200, 200)), w=200, h=185)
-cr2 = CollisionRect(t=newTransform(t=vec(400, 250)), w=15, h=400)
+so1 = SceneObject(t=sg.newTransform(t=vec(150,0)), vs=[vec(-100,-100), vec(100,-100), vec(100,100), vec(-100,100)], ds=GL_LINES,
+	vis = [0, 1, 1, 2, 2, 3, 3, 0],	cs = Color.Purple+Color.Blue+Color.Orange+Color.Green)
 
-cr1Color = None
-cr2Color = None
-
-pyglet.gl.glPolygonMode(pyglet.gl.GL_FRONT_AND_BACK, pyglet.gl.GL_LINE)
-pyglet.gl.glPointSize(5)
+so2 = SceneObject(t=so1.getTransform().createChild(), source=DiscreteRect(10, 50))
 
 def update(dt):
-	ddm.update(dt)
+	so2.rotate(.005)
 	
-	cr1.update(dt)
-	cr2.update(dt)
-	
-	cr2.rotate(.001)
-	
-	if(cr1.testCollision(cr2)):
-		cr1Color = Color.Red
-		cr2Color = Color.White
-	else:
-		cr1Color = Color.Green
-		cr2Color = Color.Purple
-	
-	ddm.drawRect(None, cr1._width, cr1._height, t=cr1.getTransform(), color=cr1Color)
-	ddm.drawRect(None, cr2._width, cr2._height, t=cr2.getTransform(), color=cr2Color)
-
-
 @window.event
 def on_draw():
-	window.clear()	
-	ddm.draw()
+	window.clear()
+	rendMan.render()
+	
 	
 
 pyglet.clock.schedule(update)

@@ -21,7 +21,6 @@ from tools import getDictValue
 
 #--------------------------------------------------#
 
-tg = None
 class TransformationGraph(Object):
 
 	def __initVars__(self, **kwArgs):
@@ -39,7 +38,7 @@ class TransformationGraph(Object):
 		return self._rootNode
 
 	def newTransform(self, **kwArgs):
-		return self._rootNode.createChildNode(**kwArgs)
+		return self._rootNode.createChild(**kwArgs)
 		
 '''
 	
@@ -61,10 +60,10 @@ class Transform(Object):
 		'''	Transform Data '''
 		self._translate 	= getDictValue(kwArgs, vec(), ['t', 'translate'])
 		self._rotateRads 	= getDictValue(kwArgs, 0.0, ['r', 'rotate'])
-		self._scale			= getDictValue(kwArgs, 1.0, ['s', 'scale'])
+		self._scale			= getDictValue(kwArgs, vec(1,1), ['s', 'scale'])
 		self._gTrans		= self._translate.copy()
 		self._gRotRads      = self._rotateRads
-		self._gScale		= self._scale
+		self._gScale		= self._scale.copy()
 	
 		'''	Transformable Data	'''
 		self._transformables  = []
@@ -111,8 +110,14 @@ class Transform(Object):
 	def scale(self, v):
 		self._scale *= v
 		self._scaleDependents()
+	def scale2f(self, x, y):
+		self._scale *= vec(x,y)
+		self._scaleDependents()
 	def setScale(self, v):
 		self._scale = v
+		self._scaleDependents()
+	def setScale2f(self, x, y):
+		self._scale = vec(x, y)
 		self._scaleDependents()
 	
 
@@ -133,9 +138,9 @@ class Transform(Object):
 		return self._rotateRads
 		
 	def getScale(self):
-		return self._gScale
+		return self._gScale.copy()
 	def getLocalScale(self):
-		return self._scale
+		return self._scale.copy()
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -144,10 +149,7 @@ class Transform(Object):
 	#		Common Node Operations		#
 	#####################################
 	
-	def getInverse(self):
-		return Transform(t=-self._gTrans, r=-self._gRotRads, s=-self._gScale)
-		
-	def createChildNode(self, **kwArgs):
+	def createChild(self, **kwArgs):
 		node = Transform(**kwArgs)
 		node.setParent(self)
 		return node
@@ -182,7 +184,7 @@ class Transform(Object):
 	#################################
 	
 	def _translateDependents(self):
-		pTrans = ZeroVector
+		pTrans = vec()
 		if(self._parent):
 			pTrans = self._parent.getTranslation()
 			
@@ -210,13 +212,14 @@ class Transform(Object):
 			for child in self._children:
 				child._rotateDependents()
 	def _scaleDependents(self):
-		pScale = 1.0
+		pScale = vec(1.0, 1.0)
 		if(self._parent):
 			pScale = self._parent.getScale()
 			
 		newScale = self._scale * pScale
 		oldScale = self._gScale
-		if(newScale != oldScale):	
+		
+		if(newScale != oldScale):
 			self._gScale = newScale
 			
 			for transformable in self._transformables:
