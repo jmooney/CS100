@@ -24,7 +24,8 @@ from tools import getDictValue
 #------------------------------------------------------#
 #
 #	- Consider adding \static modifier to vertexList
-#
+#	- Add in 'batch' capabilities
+#	
 #------------------------------------------------------#
 
 
@@ -49,8 +50,8 @@ class SceneObject(Transformable):
 		
 		self._numVertices 	= len(vs)
 		self._colors	  	= getDictValue(kwArgs, color*self._numVertices, ['cs', 'colors'])
-
-		self._buildVertexList()
+		
+		self._buildVertexList(kwArgs)
 		
 	
 	def __del__(self):
@@ -59,14 +60,14 @@ class SceneObject(Transformable):
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	def _buildVertexList(self):
+	def _buildVertexList(self, kwArgs):
 		data = []
 		for v in self._vertices:
 			data.append(v.x)
 			data.append(v.y)
-			
+		
 		self._vertexList = vertex_list_indexed(self._numVertices, self._vertexIndices,
-			('v2f/static', data), ('c3B', self._colors))
+			('v2f/static', data), ('c3B', self._colors), ('t2f', self._texCoords))
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''

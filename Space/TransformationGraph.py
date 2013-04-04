@@ -67,19 +67,7 @@ class Transform(Object):
 	
 		'''	Transformable Data	'''
 		self._transformables  = []
-	
-	
-	''''''''''''''''''''''''''''''''''''''''''
-		
-	def destroy(self):
-		for transformable in self._transformables:
-			transformable.removeTransform()
-		for child in self._children:
-			child.destroy()
-			
-		self._transformables = []
-		self._children = []
-		
+
 	
 	''''''''''''''''''''''''''''''''''''''''''
 	
@@ -161,19 +149,14 @@ class Transform(Object):
 	#		Transformable Operations		#
 	#########################################
 	
-	def addTransformable(self, d):
+	def _addTransformable(self, d):
 		self._transformables.append(d)
 		
 		d._onTranslation(self._gTrans)
 		d._onRotation(self._gRotRads)
 		d._onScale(self._gScale)
 
-	def killTransformable(self, d):
-		self._transformables.remove(d)
-		if not self._transformables:
-			self.destroy()
-		
-	def removeTransformable(self, d):
+	def _removeTransformable(self, d):
 		self._transformables.remove(d)
 		
 	

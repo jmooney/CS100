@@ -16,8 +16,6 @@
 import math
 
 from TransformationGraph import TransformationGraph
-
-
 from pyglet.gl import (	glPushMatrix, glPopMatrix,
 	glTranslatef, glRotatef, glScalef	)
 

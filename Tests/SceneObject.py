@@ -33,7 +33,6 @@ from TransformationGraph import Transform
 
 from SceneObject import SceneObject
 from DiscretePrimitives import *
-from Sprite import Sprite
 from Vector import vec
 
 #-------------------------------------------------------#	
@@ -44,12 +43,12 @@ winDimensions 	= [800, 600]
 rendMan = Renderer(winSize=winDimensions)
 sg = rendMan.getSceneGraph()
 
-S = Sprite("C:/Users/John/Pictures/Earth.jpg", t=sg.newTransform(t=vec(0, 0)))
-pyglet.gl.glClearColor(1,1,1,0);
+so1 = SceneObject(t=sg.newTransform(t=vec(150,0)), vs=[vec(-100,-100), vec(100,-100), vec(100,100), vec(-100,100)], ds=GL_LINES,
+	vis = [0, 1, 1, 2, 2, 3, 3, 0],	cs = Color.Purple+Color.Blue+Color.Orange+Color.Green)
+so2 = SceneObject(t=so1.getTransform().createChild(), source=DiscreteRect(10, 50))
 
 def update(dt):
-	pass#S.rotate(.002)
-	
+	so2.rotate(.005)
 	
 @window.event
 def on_draw():

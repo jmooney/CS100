@@ -28,7 +28,7 @@ class Transformable(Object):
 		
 		self._isTransformed = False
 		self._transform 	= None
-
+		
 		
 	# 			Modifies child-personal variables				#
 	def __initData__(self, **kwArgs):
@@ -95,25 +95,24 @@ class Transformable(Object):
 		return self._transform
 	def setTransform(self, node):
 		self._transform = node
-		node.addTransformable(self)
-	def killTransform(self):
-		self._transform.killTransformable(self)
-		self._transform = None
+		node._addTransformable(self)
 	def removeTransform(self):
-		self._transform.removeTransformable(self)
+		t = self._transform
+		
+		self._transform._removeTransformable(self)
 		self._transform = None
 		
 		self._worldPos 		= vec()
 		self._worldRot		= 0.0
 		self._worldScale	= vec(1,1)
 		
+		return t
+		
 		
 	#################################
 	#		Data Maintenance		#
 	#################################
 
-	def _onTransformation(self):
-		self._isTransformed = False
 	def _onTranslation(self, dif):
 		self._worldPos  	= self._localPos + self._transform.getTranslation()
 		self._isTransformed = True
