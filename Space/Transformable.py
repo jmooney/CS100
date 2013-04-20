@@ -19,8 +19,8 @@ from tools import getDictValue
 
 class Transformable(Object):
 	
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		
 		self._worldPos 		= vec()
 		self._worldRot 		= 0.0
@@ -29,18 +29,17 @@ class Transformable(Object):
 		self._isTransformed = False
 		self._transform 	= None
 		
-		
-	# 			Modifies child-personal variables				#
-	def __initData__(self, **kwArgs):
-		super().__initData__(**kwArgs)
-		
+
+	def __initC__(self, **kwArgs):
 		self._localPos		= getDictValue(kwArgs, vec(), ['lp', 'localPos'])
 		self._localRot		= getDictValue(kwArgs, 0.0, ['lr', 'localRot'])
 		self._localScale	= getDictValue(kwArgs, vec(1, 1), ['ls', 'localScale'])
 
 		t = getDictValue(kwArgs, None, ['t', 'transform'])
 		if(t):
-			self.setTransform(t)			
+			self.setTransform(t)		
+		
+		super().__initC__(**kwArgs)
 
 	''''''''''''''''''''''''''''''''''''''''''
 	

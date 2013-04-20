@@ -44,8 +44,10 @@ rendMan = Renderer(winSize=winDimensions)
 sg = rendMan.getSceneGraph()
 
 so1 = SceneObject(t=sg.newTransform(t=vec(150,0)), vs=[vec(-100,-100), vec(100,-100), vec(100,100), vec(-100,100)], ds=GL_LINES,
-	vis = [0, 1, 1, 2, 2, 3, 3, 0],	cs = Color.Purple+Color.Blue+Color.Orange+Color.Green)
-so2 = SceneObject(t=so1.getTransform().createChild(), source=DiscreteRect(10, 50))
+	vis = (0, 1, 1, 2, 2, 3, 3, 0),	cs = Color.Purple+Color.Blue+Color.Orange+Color.Green)
+so2 = SceneObject(t=so1.getTransform().createChild(), dataSrc=DiscreteRect(10, 50))
+so3 = SceneObject(t=sg.newTransform(), numVerts=3, drawStyle=GL_TRIANGLES, explicitData=[('v2f/static', [-30, -30, 30, -30, 0, 30])])
+
 
 def update(dt):
 	so2.rotate(.005)

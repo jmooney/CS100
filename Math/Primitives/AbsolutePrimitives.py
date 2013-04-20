@@ -20,9 +20,9 @@
 
 class AbsolutePrimitive(Object):
 
-	def __initData__(self, **kwArgs):
-		super.__initData__(**kwArgs)
+	def __initC__(self, **kwArgs):
 		self.__data = self._points[:]
+		super.__initC__(**kwArgs)
 	
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -49,9 +49,9 @@ class AbsolutePrimitive(Object):
 #-----------------------------------------------#
 
 class AbsoluteRect(AbsolutePrimitive, DiscreteRect):
-	def __initData__(self, **kwArgs):
-		super().__initData__(**kwArgs)
+	def __initC__(self, **kwArgs):
 		self.__data[:] = self.__data+[self._diagonal]
+		super().__initC__(**kwArgs)
 		
 	def _onScale(self, dif):
 		super()._onScale(dif)
@@ -62,14 +62,14 @@ class AbsoluteRect(AbsolutePrimitive, DiscreteRect):
 #-----------------------------------------------#
 
 class AbsoluteEllipse(AbsolutePrimitive, DiscreteEllipse):
-	def __initData__(self, **kwArgs):
-		super().__initData__(**kwArgs)
+	def __initC__(self, **kwArgs):
 		self.__data[:] = self.__data+[self._a, self._b]
+		super().__initC__(**kwArgs)
 		
 #-----------------------------------------------#
 
 class AbsoluteLine(AbsolutePrimitive, DiscreteLine):
-	def __initData__(self, **kwArgs):
+	def __initC__(self, **kwArgs):
 		self.__data[:] = self.__data+[self._endVec]
-		super().__initData__(**kwArgs)
+		super().__initC__(**kwArgs)
 		

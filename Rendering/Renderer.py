@@ -26,8 +26,8 @@ from TransformationGraph import Transform
 
 class Renderer(Object):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		
 		self._sceneGraph 	= SceneGraph()
 		self._camera 		= Camera(getDictValue(kwArgs, None, ['ws', 'winSize', 'windowSize'], True), t=Transform())

@@ -19,20 +19,17 @@ class Object(object):
 	
 	def __init__(self, **kwArgs):
 		super().__init__()
-		self.__initVars__(**kwArgs)
-		self.__initData__(**kwArgs)
+		self.__initP__(**kwArgs)
+		self.__initC__(**kwArgs)
 		
 	''''''''''''''''''''''''''''''''''''''
 	
 	#	Initalizes Variables to default values
 	#		- Creates all parent-variables before child-variables 
-	def __initVars__(self, **kwArgs):
+	def __initP__(self, **kwArgs):
 		pass
 		
 	#	Sets parent variable data utilizing personal-variables within children		#
-	#		- Assumes child personal-variables have a determined value
-	#		- A personal-variable is a variable independent of a parent's data
-	#		- Can modify child personal-variables;
-	#		- Makes no assumptions about child initData's
-	def __initData__(self, **kwArgs):
+	#		- Creates all child-variables before parent-variables
+	def __initC__(self, **kwArgs):
 		pass

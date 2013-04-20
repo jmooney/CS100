@@ -21,12 +21,16 @@ from DiscretePrimitives import DiscreteRect
 class Sprite(SceneObject):
 
 	def __init__(self, image, **kwArgs):
+		# Load or obtain texture
 		if isinstance(image, pyglet.image.AbstractImage):
 			self._texture = image.get_texture()
 		else:
 			self._texture = pyglet.image.load(image).get_texture()
-		kwArgs['src'] = DiscreteRect(self._texture.width, self._texture.height)
-
+			
+		# Set Sprite-Specific Arguments
+		kwArgs['dataSrc'] = DiscreteRect(self._texture.width, self._texture.height)
+		kwArgs['ed'] = [('t2f', [0, 0, 1, 0, 1, 1, 0, 1])]
+		
 		super().__init__(**kwArgs)
 	
 	

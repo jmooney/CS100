@@ -44,11 +44,11 @@ winDimensions 	= [800, 600]
 rendMan = Renderer(winSize=winDimensions)
 sg = rendMan.getSceneGraph()
 
-S = Sprite("C:/Users/John/Pictures/Earth.jpg", t=sg.newTransform(t=vec(0, 0)))
+S = Sprite("C:/Users/John/Pictures/Lake.jpg", t=sg.newTransform())
 pyglet.gl.glClearColor(1,1,1,0);
 
 def update(dt):
-	pass#S.rotate(.002)
+	S.translate2f(.01, 0)
 	
 	
 @window.event

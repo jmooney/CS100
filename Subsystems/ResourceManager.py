@@ -1,7 +1,8 @@
+
 '''
 
 	Author: John Mooney
-	Date:	12/19/2012
+	Date:	4/8/2013
 	
 	Description:
 		Resource Manager - Handles resource management within CS100. 
@@ -19,49 +20,65 @@ from tools import getDictValue
 #------------------------------------------#
 
 class ResourceManager(Object):
-	
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
-		
-		self._resources 		= {}
-		self._resourceBuilds 	= {}
-	
-	###################################
-	###################################
 
-	def request(self, resFileName):
-		if(resFileName in self._resources.keys()):
-			return self._resources[resFileName]
+	def __init__(self, directory, **kwArgs):
+		super().__init__(**kwArgs)
+		self._directory = directory
+		
+		
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
+		
+		self._resources = {}
+		self._resourceGroups = {}
+		self._resourceGroupStack = []
+		self._activeResourceGroups = []
+		
+
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	#	request(self, resourceID)
+	#		- Object-level resource access
+	def request(self, resId):
+		pass
+		
+
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def pushGroup(self, group):
+		if groupId isinstance(str):
+			self.pushGroup(self.createGroup(groupName = group)):
 		else:
-			return self._loadResource(resFileName)
-		
-	def free(self, res):
-		maxRefCount = 1 + 1 + 1 + 1
-		if(sys.getrescount(res) <= maxRefCount):
-			del(self._resources[res.filename])
-
-	###################################
-	###################################
+			self._resourceGroupStack.append(group)
+			self._activeResourceGroups.append(group)
+	def popGroup(self):
+		self._activeResourceGroups.remove(self._resourceGroupStack.pop())
 	
-	def _loadResource(self, resFileName):
-		resType = FileManager.getFileType(resFileName)
-		resource = self._resourceBuilds[resType](resFileName)
-		resource.load()
-		
-		self._resources.append(resource)
-		return resource
-
-		
-#------------------------------------------#
-
-class Resource(Object):
-
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(self, **kwArgs)
-		self.filename = getDictValue(kwArgs, "", ['f', 'filename'], True)
-		
-	################################
-	################################
 	
-	def load(self):
-		raise NotImplementedError()
+	def createGroup(self, groupName):
+		pass
+	
+		
+#-------------------------------------------#
+	
+class ResourceGroup(Object):
+
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
+		self._resourceIds = []
+
+
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def addResource(self, resFileName):
+		pass
+	def removeResource(self, resId):
+		pass
+	
+	
+	#	Group Creation (Stack Based?)
+	#	Group Loading/Removal (Stack Based?)
+	#	Resource requests/access
+	#	Groups:
+	#		Easy loading/saving of resources; Information regarding number of resources allocated
+	

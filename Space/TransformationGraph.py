@@ -23,8 +23,8 @@ from tools import getDictValue
 
 class TransformationGraph(Object):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		self._rootNode = Transform()
 
 		
@@ -50,8 +50,8 @@ class TransformationGraph(Object):
 
 class Transform(Object):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		
 		'''	Node and Update Values '''
 		self._parent  	= None

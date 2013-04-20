@@ -25,28 +25,54 @@ from tools import twoPi
 
 class DiscretePrimitive(VertexDataSource):
 
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
-		self._points = []
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
+		self._points 	= []
 		
-	def __initData__(self, **kwArgs):
-		super().__initData__(**kwArgs)
+		self._vis = []
+		self._drawStyle = None
+		
+		
+	def __initC__(self, **kwArgs):
 		self._buildPoints()
+		self._buildVIS()
+		super().__initC__(**kwArgs)
+		
+	
+	''''''''''''''''''''''''''''''''''''''''''
+	
+	def _buildPoints(self):
+		raise NotImplementedError
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def getVertexData(self):
-		return self._points, list(range(len(self._points))), self._drawStyle
+		return len(self._points), self._drawStyle, self._vis, self._buildVLD()
+	
 
+	''''''''''''''''''''''''''''''''''''''''''
+	
+	def _buildVIS(self):
+		if not self._vis:
+			self._vis = list(range(len(self._points)))
+			
+	def _buildVLD(self):
+		data = []
+		for p in self._points:
+			data.append(p.x)
+			data.append(p.y)
+		return [('v2f', data)]
+	
 		
 #------------------------------------------------------#
 
 class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 	
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		self._triangleCount = getDictValue(kwArgs, 26, ['tc', 'triangleCount'])
+
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -68,11 +94,7 @@ class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 			self._points.append(p)
 			
 			tAngle += tStep
-
-	''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def getVertexData(self):
-		return self._points, list(range(len(self._points))) + [1], self._drawStyle
+		self._vis = list(range(len(self._points))) + [1]
 	
 		
 #------------------------------------------------------#

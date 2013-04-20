@@ -32,8 +32,8 @@ class vec(Object):
 		kwArgs['x'] = x;	kwArgs['y'] = y
 		super().__init__(**kwArgs)
 		
-	def __initVars__(self, **kwArgs):
-		super().__initVars__(**kwArgs)
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
 		
 		tx = getDictValue(kwArgs, 0.0, ['x'], True)
 		ty = getDictValue(kwArgs, 0.0, ['y'], True)
