@@ -24,19 +24,19 @@
 
 
 # Imports
-import os
-
 from Object import Object
-
+import os
 	
 
 #------------------------------------------#
 
 class ResourceManager(Object):
 
-	def __init__(self, directory, **kwArgs):
+	activeManager = None
+	
+	def __init__(self, dataDirectory, **kwArgs):
 		super().__init__(**kwArgs)
-		self._directory = directory
+		self._dataDirectory = dataDirectory
 		
 		
 	def __initP__(self, **kwArgs):
@@ -47,8 +47,16 @@ class ResourceManager(Object):
 		self._resourceGroupStack = []
 		self._residentResourceGroups = []
 		
+		self._registeredPaths = {}
 		self._registeredBuilders = {}
 		self._registeredResourceGroups = {}
+		
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	@classmethod
+	def getRM(cls):
+		return cls.activeManager
 		
 
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -59,9 +67,7 @@ class ResourceManager(Object):
 		try:
 			return self._resources[resId]
 		except KeyError:
-			filename 	= resId
-			root, ext 	= os.path.splitext(filename)
-			
+			filename, ext = self._getPath(resId)
 			resGroups = self._getApplicableGroups(ext)
 			resourceHandle = self._loadResource(filename, ext, builder)
 			
@@ -95,6 +101,17 @@ class ResourceManager(Object):
 			
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	def _getPath(self, resId):
+		root, ext = os.path.splitext(resId)
+		fileDirectory = ""
+		try:
+			fileDirectory = self._registeredPaths[ext]
+		except KeyError:
+			pass
+			
+		return os.path.join(self._dataDirectory, fileDirectory, resId), ext
+		
+		
 	def _getApplicableGroups(self, ext):
 		try:
 			return self._registeredResourceGroups[ext] + ([self._resourceGroupStack[-1]] if self._resourceGroupStack else [])
@@ -108,13 +125,15 @@ class ResourceManager(Object):
 			except KeyError:
 				raise ValueError("Unrecognized Resource File Extension " + ext)
 		
+		print(filename)
 		res = builder(filename)
 		return res
 			
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	def registerExtension(self, ext, groupNames, builder):
+	def registerExtension(self, ext, path, groupNames, builder):
+		self._registeredPaths[ext] = path
 		self._registeredBuilders[ext] = builder
 		
 		rGroups = []
@@ -144,6 +163,7 @@ class ResourceManager(Object):
 			for rsId in rg._resourceIds:
 				print("\t\t\t" + rsId)
 
+				
 #-------------------------------------------#
 	
 class ResourceGroup(Object):

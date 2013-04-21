@@ -26,12 +26,13 @@ for root, direcs, files in os.walk(os.getcwd()):
 
 
 # Imports
+import Color
+
 from Renderer import Renderer
 from TransformationGraph import Transform
-from ResourceManager import ResourceManager
 
+from ResourceManager import ResourceManager
 from Sprite import Sprite
-from Animation import Animation
 
 
 #-------------------------------------------------------#	
@@ -41,20 +42,23 @@ winDimensions 	= [800, 600]
 
 rendMan = Renderer(winSize=winDimensions)
 sg = rendMan.getSceneGraph()
+rm = ResourceManager("directory")
 
-rm = ResourceManager("Tests\\data")
-ResourceManager.activeManager = rm
-rm.registerExtension(".jpg", "img", ["img"], pyglet.image.load)
-rm.registerExtension(".bmp", "img", ["img"], pyglet.image.load)
-rm.registerExtension(".anim", "anim", ["anim"], Animation)
+rm.registerExtension(".jpg", ["img"], pyglet.image.load)
 
-anim = rm.request("PShip.anim")
+rm.pushGroup("Level1")
+im = rm.request("C:/Users/John/Pictures/Lake.jpg")
+im2 = rm.request("C:/Users/John/Pictures/Lake.jpg", lambda x: x)
 rm.debugDisplay()
+rm.popGroup()
 
+S = Sprite(im, t=sg.newTransform())
 pyglet.gl.glClearColor(1,1,1,0);
 
+rm.debugDisplay()
+
 def update(dt):
-	pass
+	S.translate2f(.01, 0)
 	
 	
 @window.event
@@ -64,3 +68,4 @@ def on_draw():
 
 pyglet.clock.schedule(update)
 pyglet.app.run()
+

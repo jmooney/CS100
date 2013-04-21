@@ -45,27 +45,28 @@ class AnimationState(Object):
 	''''''''''''''''''''''''''''''''''''''''''''''''
 		
 	def _advanceFrame(self):
-		self._frameNum += self._state
-		
-		if(self._frameNum >= self._animation.getNumFrames()):
-			self.dispatchEvent('Animation_End')
+		if self._state != "Idle":
+			self._frameNum += self._direction
 			
-			if(self._repeatMode == LOOP):
-				self._frameNum = 0
-			else:
-				self._state = PAUSED
-			
-		if(self._frameNum < 0):
-			self.dispatchEvent('Animation_End')
-			
-			if(self._repeatMode == LOOP):
-				self._frameNum = self._animation.getNumFrames()-1
-			else:
-				self._state = PAUSED
+			if(self._frameNum >= self._animation.getNumFrames()):
+				self.dispatchEvent('Animation_End')
 				
-		self._cFrame[0] = self._animation.getImage(self._frameNum)
-		self._cFrame[1] = self._animation.getTime(self._frameNum)
-		self._cFrame[2] = self._animation.getFrameCount(self._frameNum)
+				if(self._repeatMode == LOOP):
+					self._frameNum = 0
+				else:
+					self._state = PAUSED
+				
+			if(self._frameNum < 0):
+				self.dispatchEvent('Animation_End')
+				
+				if(self._repeatMode == LOOP):
+					self._frameNum = self._animation.getNumFrames()-1
+				else:
+					self._state = PAUSED
+					
+			self._cFrame[0] = self._animation.getImage(self._frameNum)
+			self._cFrame[1] = self._animation.getTime(self._frameNum)
+			self._cFrame[2] = self._animation.getFrameCount(self._frameNum)
 		
 			
 	def setFrame(self, num):
