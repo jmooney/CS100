@@ -21,11 +21,7 @@ from DiscretePrimitives import DiscreteRect
 class Sprite(SceneObject):
 
 	def __init__(self, image, **kwArgs):
-		# Load or obtain texture
-		if isinstance(image, pyglet.image.AbstractImage):
-			self._texture = image.get_texture()
-		else:
-			self._texture = pyglet.image.load(image).get_texture()
+		self._texture = image.get_texture()
 			
 		# Set Sprite-Specific Arguments
 		kwArgs['dataSrc'] = DiscreteRect(self._texture.width, self._texture.height)
@@ -39,9 +35,6 @@ class Sprite(SceneObject):
 	def draw(self):
 		glEnable(self._texture.target)
 		glBindTexture(self._texture.target, self._texture.id)
-		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
 		
 		super().draw()
 		glDisable(self._texture.target)

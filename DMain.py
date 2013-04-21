@@ -31,10 +31,9 @@ import Color
 from Renderer import Renderer
 from TransformationGraph import Transform
 
-from SceneObject import SceneObject
-from DiscretePrimitives import *
+from ResourceManager import ResourceManager
 from Sprite import Sprite
-from Vector import vec
+
 
 #-------------------------------------------------------#	
 
@@ -43,9 +42,20 @@ winDimensions 	= [800, 600]
 
 rendMan = Renderer(winSize=winDimensions)
 sg = rendMan.getSceneGraph()
+rm = ResourceManager("directory")
 
-S = Sprite("C:/Users/John/Pictures/Lake.jpg", t=sg.newTransform())
+rm.registerExtension(".jpg", ["img"], pyglet.image.load)
+
+rm.pushGroup("Level1")
+im = rm.request("C:/Users/John/Pictures/Lake.jpg")
+im2 = rm.request("C:/Users/John/Pictures/Lake.jpg", lambda x: x)
+rm.debugDisplay()
+rm.popGroup()
+
+S = Sprite(im, t=sg.newTransform())
 pyglet.gl.glClearColor(1,1,1,0);
+
+rm.debugDisplay()
 
 def update(dt):
 	S.translate2f(.01, 0)
