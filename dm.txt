@@ -1,0 +1,11 @@
+Tests\data\anim\PShip.anim
+Tests\data\img\PlayerShip1.bmp
+Resource Manager...
+	Resources: 
+		PShip.anim - <class 'Animation.Animation'>
+		PlayerShip1.bmp - <class 'pyglet.image.ImageData'>
+	Resource Groups: 
+		anim - 
+			PShip.anim
+		img - 
+			PlayerShip1.bmp

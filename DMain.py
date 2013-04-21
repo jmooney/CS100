@@ -51,10 +51,11 @@ rm.registerExtension(".anim", "anim", ["anim"], Animation)
 anim = rm.request("PShip.anim")
 rm.debugDisplay()
 
-pyglet.gl.glClearColor(1,1,1,0);
+'''		Variable Set-Up		'''
+s1 = Sprite(anim, t=sg.newTransform())
 
 def update(dt):
-	pass
+	s1.update(dt)
 	
 	
 @window.event

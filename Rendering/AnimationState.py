@@ -13,70 +13,124 @@
 
 
 # Imports
-
+from Object import Object
 
 
 #-----------------------------------------------#
 
 class AnimationState(Object):
 
+	validStates = ["Idle", "Looping", "Alternating", "Iterating"]
+
+	def __init__(self, animation=None, **kwArgs):
+		super().__init__()
+		if animation:
+			self.setAnimation(animation)
+		
+		
 	def __initP__(self, **kwArgs):
 		super().__initP__(**kwArgs)
 		
-		self._state		= None
-		self._animation = None
-		
-		self._fps = None
-		self._cFrame = None
-		self._frameNum = None
-		self._repeatMode = None
+		self._state	= "Idle"
+
+		self._frame			= None
+		self._frameIndex 	= 0
+		self._animation 	= None
+		self._animationDirection = 1
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def update(self, dt):
-		super().update(dt)
-		
-		self._cFrame[1] -= dt;	self._cFrame[2] -= 1
-		if(self._cFrame[1] <= 0 or self._cFrame[2] <= 0):
+		if self._frame.age(dt):
 			self._advanceFrame()
-			
+			return True
+		return False
+		
+	def setState(self, state):
+		if state not in AnimationState.validStates:
+			raise ValueError("Invalid Animation State Argument")
+		self._state = state
+		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
-		
+	
 	def _advanceFrame(self):
-		if self._state != "Idle":
-			self._frameNum += self._direction
+		if self._state == "Idle":
+			return
+		
+		maxFrameIndex  = self._animation.getFrameCount() - 1
+		nextFrameIndex = self._frameIndex + self._animationDirection
+		
+		#	Check for overflow animation
+		if nextFrameIndex > maxFrameIndex:
+			#self._dispatchEvent("Finished Animation")
 			
-			if(self._frameNum >= self._animation.getNumFrames()):
-				self.dispatchEvent('Animation_End')
+			if self._state == "Looping":
+				nextFrameIndex = 0
+			elif self._state == "Alternating":
+				nextFrameIndex = maxFrameIndex-1 if maxFrameIndex > 0 else 0
+			else:
+				nextFrameIndex = 0
+				self._state = "Idle"
 				
-				if(self._repeatMode == LOOP):
-					self._frameNum = 0
-				else:
-					self._state = PAUSED
-				
-			if(self._frameNum < 0):
-				self.dispatchEvent('Animation_End')
-				
-				if(self._repeatMode == LOOP):
-					self._frameNum = self._animation.getNumFrames()-1
-				else:
-					self._state = PAUSED
-					
-			self._cFrame[0] = self._animation.getImage(self._frameNum)
-			self._cFrame[1] = self._animation.getTime(self._frameNum)
-			self._cFrame[2] = self._animation.getFrameCount(self._frameNum)
-		
+		#	Check for underflow animation
+		if nextFrameIndex < 0:
+			#self._dispatchEvent("Finished Animation")
 			
-	def setFrame(self, num):
-		self._cFrame 	= [self._animation.getImage(num), self._animation.getTime(num), self._animation.getFrameCount(num)]
-		self._frameNum 	= num
+			if self._state == "Looping":
+				nextFrameIndex = maxFrameIndex
+			elif self._state == "Alternating":
+				nextFrameIndex = 1 if maxFrameIndex >= 1 else 0
+			else:
+				nextFrameIndex = 0
+				self._state = "Idle"
+			
+		self.setFrame(nextFrameIndex)
 		
-		
-	''''''''''''''''''''''''''''''''''''''''''''''''''
 
-	def setAnimation(self, anim):
-		self._animation = anim
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def setDirection(self, direc):
+		self._animationDirection = direc
+	
+	def setFrame(self, frameIndex):
+		self._frame 	 = _FrameState(self._animation.getFrame(frameIndex))
+		self._frameIndex = frameIndex
+		
+	def setAnimation(self, animation):
+		self._state = "Idle"
+		self._animation = animation
 		self.setFrame(0)
+		
+	def getImage(self):
+		return self._frame._animationFrame.getImage()
+		
+		
+#-----------------------------------------------------#
 
+class _FrameState(Object):
+
+	def __init__(self, animFrame, **kwArgs):
+		super().__init__(**kwArgs)
+		
+		self._animationFrame = animFrame
+		self._units	= animFrame.getUnits()
+		self._timeRemaining = animFrame.getTime()
+		
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def age(self, dt):
+		if not self._units:
+			return 1
+		elif self._units == 'f':
+			self._timeRemaining -= 1
+		elif self._units == 's':
+			self._timeRemaining -= dt.seconds()
+		else:
+			self._timeRemaining -= dt
+		
+		return self._timeRemaining <= 0
+
+		

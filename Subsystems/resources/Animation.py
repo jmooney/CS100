@@ -27,7 +27,6 @@ class Animation(Resource):
 
 	def __initC__(self, **kwArgs):
 		self._frames = []
-		
 		super().__initC__(**kwArgs)
 		
 	
@@ -45,6 +44,12 @@ class Animation(Resource):
 		self._readAnimData(lines)
 
 		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def getFrame(self, index):
+		return self._frames[index]
+		
+	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def _removeIgnored(self, lines):
@@ -115,8 +120,14 @@ class Animation(Resource):
 			pass
 		
 		#	Create the Frame
-		imgReg = activeImage.get_region(xStart, yStart, width, height)
-		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, disptime, units))
+		imgReg = activeImage.get_region(int(xStart), int(yStart), int(width), int(height))
+		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, float(disptime), units))
+		
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def getFrameCount(self):
+		return len(self._frames)
 		
 		
 #-----------------------------------------------#
@@ -129,4 +140,13 @@ class AnimationFrame(Object):
 		self._image = image
 		self._disptime = time
 		self._timeUnits = units
-		
+	
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def getUnits(self):
+		return self._timeUnits
+	def getTime(self):
+		return self._disptime
+	def getImage(self):
+		return self._image
