@@ -25,7 +25,7 @@ class Sprite(SceneObject):
 	def __init__(self, imageSrc, **kwArgs):
 		if isinstance(imageSrc, Animation):
 			self._animation = AnimationState(imageSrc)
-			self._animation.setState("Looping")
+			self._animation.setState("Iterating")
 			self._texture = self._animation.getImage().get_texture()
 		else:
 			self._animation = None

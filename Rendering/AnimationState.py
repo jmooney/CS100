@@ -126,8 +126,8 @@ class _FrameState(Object):
 			return 1
 		elif self._units == 'f':
 			self._timeRemaining -= 1
-		elif self._units == 's':
-			self._timeRemaining -= dt.seconds()
+		elif self._units == 'm':
+			self._timeRemaining -= dt.millis()
 		else:
 			self._timeRemaining -= dt
 		
