@@ -28,6 +28,9 @@ class Transformable(Object):
 		self._worldScale 	= vec(1, 1)
 		self._lastTransformation = [False, [0,0,0]]
 		
+		'''		Temporary Fix		'''
+		self.isDrawn = True
+		
 
 	def __initC__(self, **kwArgs):
 		self._localPos		= getDictValue(kwArgs, vec(), ['lp', 'localPos'])

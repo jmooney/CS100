@@ -38,7 +38,7 @@ class Sprite(Transformable):
 		#	Create the Scene Object representation
 		self._sceneObject = SceneObject(dataSrc = DiscreteRect(self._texture.width, self._texture.height),	\
 			t=self.getTransform(), ed=[('t3f', self._texture.tex_coords)], batch=kwArgs.get('batch', None), group=kwArgs.get('group', None))
-				
+		self._sceneObject.isDrawn = False
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
