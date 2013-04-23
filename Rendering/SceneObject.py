@@ -46,6 +46,7 @@ class SceneObject(Transformable):
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 			
 	def _buildVertexList(self, nv, vis, vertexListData):
+		self._numVerts = nv
 		if(self._batch):
 			self._vertexList = self._batch.add_indexed(nv, self._drawStyle, self._group, vis, *vertexListData)
 		else:
@@ -155,11 +156,23 @@ class SceneObject(Transformable):
 		color = getDictValue(kwArgs, Color.White, ['c', 'color'])
 		colors = getDictValue(kwArgs, color*nv, ['cs', 'colors'])
 		return ('c3B', colors)
+		
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def setColor(self, color):
+		self._vertexList.colors[:] = color*self._numVerts
 	
 
 #-----------------------------------------------------#
 
 class VertexDataSource(Object):
+
+	def __initP__(self, **kwArgs):
+		super().__initP__(**kwArgs)
+		
+		self._vis = []
+		self._drawStyle = None
 
 	#	Returns NumVerts, drawStyle, vertexIndices, formattedData
 	def getVertexData(self):

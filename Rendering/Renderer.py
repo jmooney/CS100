@@ -26,6 +26,8 @@ from TransformationGraph import Transform
 
 class Renderer(Object):
 
+	activeRenderer = None
+	
 	def __initP__(self, **kwArgs):
 		super().__initP__(**kwArgs)
 		
@@ -45,6 +47,10 @@ class Renderer(Object):
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	@classmethod
+	def getRenderer(cls):
+		return cls.activeRenderer
 	
 	def setSceneGraph(self, sg):
 		self._sceneGraph = sg

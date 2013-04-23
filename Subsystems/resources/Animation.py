@@ -101,7 +101,7 @@ class Animation(Resource):
 		return image
 		
 	def _readFrame(self, line, activeImage):
-		frameLineRegex = "^(\d+)\s+-\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+:\s+(\d+)([fms]))?"
+		frameLineRegex = "^(\d+)\s+-\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)(?:\s+:\s+(\d+.?\d*)([fms]))?"
 		
 		#	Check Match
 		frameLineTokens = re.search(frameLineRegex, line)
@@ -115,13 +115,13 @@ class Animation(Resource):
 		
 		disptime = None;	units = None;
 		try:
-			disptime = frameLineTokens.group(6);	units = frameLineTokens.group(7)
+			disptime = float(frameLineTokens.group(6));	units = frameLineTokens.group(7)
 		except IndexError:
 			pass
 		
 		#	Create the Frame
 		imgReg = activeImage.get_region(int(xStart), int(yStart), int(width), int(height))
-		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, float(disptime), units))
+		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, disptime, units))
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''

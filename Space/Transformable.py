@@ -22,12 +22,11 @@ class Transformable(Object):
 	def __initP__(self, **kwArgs):
 		super().__initP__(**kwArgs)
 		
+		self._transform 	= None
 		self._worldPos 		= vec()
 		self._worldRot 		= 0.0
 		self._worldScale 	= vec(1, 1)
-		
-		self._isTransformed = False
-		self._transform 	= None
+		self._lastTransformation = [False, [0,0,0]]
 		
 
 	def __initC__(self, **kwArgs):
@@ -37,16 +36,18 @@ class Transformable(Object):
 
 		t = getDictValue(kwArgs, None, ['t', 'transform'])
 		if(t):
-			self.setTransform(t)		
+			self.setTransform(t)
+			self._onTransformation(self._lastTransformation[1])
 		
 		super().__initC__(**kwArgs)
 
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def update(self, dt):
-		if(self._isTransformed):
-			self._onTransformation()
+		if self._lastTransformation[0]:
+			self._onTransformation(self._lastTransformation[1])
 			
+
 	#################################
 	#	Transform Setters/Getters	#
 	#################################
@@ -111,14 +112,18 @@ class Transformable(Object):
 	#################################
 	#		Data Maintenance		#
 	#################################
+	
+	def _onTransformation(self, transformations):
+		self._lastTransformation[0] = False;	self._lastTransformation[1] = [0,0,0]
+		
 
 	def _onTranslation(self, dif):
 		self._worldPos  	= self._localPos + self._transform.getTranslation()
-		self._isTransformed = True
+		self._lastTransformation[0] = True;	self._lastTransformation[1][0] = dif
 	def _onRotation(self, dif):
 		self._worldRot  	= self._localRot + self._transform.getRotation()
-		self._isTransformed = True
+		self._lastTransformation[0] = True;	self._lastTransformation[1][1] = dif
 	def _onScale(self, dif):
 		self._worldScale 	= self._localScale * self._transform.getScale()
-		self._isTransformed = True
+		self._lastTransformation[0] = True;	self._lastTransformation[1][2] = dif
 		

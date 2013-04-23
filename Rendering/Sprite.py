@@ -15,30 +15,31 @@
 import pyglet.image
 from pyglet.gl import *
 
-from SceneObject import SceneObject
-from AnimationState import AnimationState
 from Animation import Animation
+from SceneObject import SceneObject
+from Transformable import Transformable
+from AnimationState import AnimationState
 from DiscretePrimitives import DiscreteRect
 
-class Sprite(SceneObject):
+
+class Sprite(Transformable):
 
 	def __init__(self, imageSrc, **kwArgs):
+		super().__init__(**kwArgs)
+
+		#	Set Image/Animation
 		if isinstance(imageSrc, Animation):
 			self._animation = AnimationState(imageSrc)
-			self._animation.setState("Iterating")
 			self._texture = self._animation.getImage().get_texture()
 		else:
 			self._animation = None
-			self._texture = image.get_texture()
+			self._texture = imageSrc.get_texture()
 			
-
-		# Set Sprite-Specific Rect-Creation Arguments
-		kwArgs['dataSrc'] = DiscreteRect(self._texture.width, self._texture.height)
-		kwArgs['ed'] = [('t2f', [0, 0, 1, 0, 1, 1, 0, 1])]
+		#	Create the Scene Object representation
+		self._sceneObject = SceneObject(dataSrc = DiscreteRect(self._texture.width, self._texture.height),	\
+			t=self.getTransform(), ed=[('t3f', self._texture.tex_coords)], batch=kwArgs.get('batch', None), group=kwArgs.get('group', None))
+				
 		
-		super().__init__(**kwArgs)
-	
-	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def update(self, dt):
@@ -46,9 +47,20 @@ class Sprite(SceneObject):
 			self._texture = self._animation.getImage().get_texture()
 	
 	def draw(self):
-		glEnable(self._texture.target)
 		glBindTexture(self._texture.target, self._texture.id)
+		glEnable(self._texture.target)
 		
-		super().draw()
+		self._sceneObject.draw()
 		
 		glDisable(self._texture.target)
+
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def getImage(self):
+		return self._texture
+		
+	def setAnimation(self, animState):
+		self._animation.setState(animState)
+	def getAnimation(self):
+		return self._animation

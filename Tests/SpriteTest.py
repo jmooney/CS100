@@ -28,12 +28,12 @@ for root, direcs, files in os.walk(os.getcwd()):
 # Imports
 import Color
 
-from Vector import vec
-from Sprite import Sprite
 from Renderer import Renderer
-from Animation import Animation
 from TransformationGraph import Transform
 from ResourceManager import ResourceManager
+
+from Animation import Animation
+from Sprite import Sprite
 
 #-------------------------------------------------------#	
 
@@ -52,32 +52,21 @@ rm.registerExtension(".bmp", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".png", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".anim", "anim", ["anim"], Animation)
 
-anim1 = rm.request("CharizardEvolve.anim")
-anim2 = rm.request("PShip.anim")
+im = rm.request("C:/Users/John/Pictures/Lake.jpg")
 
-s1 = Sprite(anim1, t=sg.newTransform())
-s2 = Sprite(anim2, t=sg.newTransform(t=vec(-200,100)))
+sp = pyglet.sprite.Sprite(im)
+sp2 = Sprite(im, t=sg.newTransform())
 
-s1.setAnimation("Alternating")
-s2.setAnimation("Looping")
-
-
-print("")
-rm.debugDisplay()
-print("")
-
-
+pyglet.gl.glClearColor(1,0,1,0);
 def update(dt):
-	s1.update(dt)
-	s2.update(dt)
-
-
+	pass
 	
 	
 @window.event
 def on_draw():
 	window.clear()
 	rendMan.render()
+	sp.draw()
 
 pyglet.clock.schedule(update)
 pyglet.app.run()

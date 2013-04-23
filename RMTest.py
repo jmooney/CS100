@@ -26,13 +26,14 @@ for root, direcs, files in os.walk(os.getcwd()):
 
 
 # Imports
+import Color
+
+from Vector import vec
+from Sprite import Sprite
 from Renderer import Renderer
+from Animation import Animation
 from TransformationGraph import Transform
 from ResourceManager import ResourceManager
-
-from Sprite import Sprite
-from Animation import Animation
-
 
 #-------------------------------------------------------#	
 
@@ -40,22 +41,37 @@ window 			= pyglet.window.Window(800, 600)
 winDimensions 	= [800, 600]
 
 rendMan = Renderer(winSize=winDimensions)
+Renderer.activeRenderer = rendMan
+
 sg = rendMan.getSceneGraph()
 
 rm = ResourceManager("Tests\\data")
 ResourceManager.activeManager = rm
 rm.registerExtension(".jpg", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".bmp", "img", ["img"], pyglet.image.load)
+rm.registerExtension(".png", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".anim", "anim", ["anim"], Animation)
 
-anim = rm.request("PShip.anim")
-rm.debugDisplay()
+anim1 = rm.request("CharizardEvolve.anim")
+anim2 = rm.request("PShip.anim")
 
-'''		Variable Set-Up		'''
-s1 = Sprite(anim, t=sg.newTransform())
+s1 = Sprite(anim1, t=sg.newTransform())
+s2 = Sprite(anim2, t=sg.newTransform(t=vec(-200,100)))
+
+s1.setAnimation("Alternating")
+s2.setAnimation("Looping")
+
+
+print("")
+rm.debugDisplay()
+print("")
+
 
 def update(dt):
 	s1.update(dt)
+	s2.update(dt)
+
+
 	
 	
 @window.event
@@ -65,3 +81,4 @@ def on_draw():
 
 pyglet.clock.schedule(update)
 pyglet.app.run()
+

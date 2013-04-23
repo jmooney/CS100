@@ -70,6 +70,7 @@ class AnimationState(Object):
 				nextFrameIndex = 0
 			elif self._state == "Alternating":
 				nextFrameIndex = maxFrameIndex-1 if maxFrameIndex > 0 else 0
+				self._animationDirection = -self._animationDirection
 			else:
 				nextFrameIndex = 0
 				self._state = "Idle"
@@ -82,6 +83,7 @@ class AnimationState(Object):
 				nextFrameIndex = maxFrameIndex
 			elif self._state == "Alternating":
 				nextFrameIndex = 1 if maxFrameIndex >= 1 else 0
+				self._animationDirection = -self._animationDirection
 			else:
 				nextFrameIndex = 0
 				self._state = "Idle"

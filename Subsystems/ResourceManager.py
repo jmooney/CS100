@@ -125,7 +125,6 @@ class ResourceManager(Object):
 			except KeyError:
 				raise ValueError("Unrecognized Resource File Extension " + ext)
 		
-		print(filename)
 		res = builder(filename)
 		return res
 			
@@ -153,11 +152,11 @@ class ResourceManager(Object):
 	def debugDisplay(self):
 		print("Resource Manager...")
 		
-		print("\tResources: ")
+		print("\n\tResources: ")
 		for rId, r in self._resources.items():
 			print("\t\t" + rId + " - " + str(type(r)))
 		
-		print("\tResource Groups: ")
+		print("\n\tResource Groups: ")
 		for rgId, rg in self._resourceGroups.items():
 			print("\t\t" + rgId + " - " + ("R" if rgId in self._residentResourceGroups else ""))
 			for rsId in rg._resourceIds:

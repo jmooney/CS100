@@ -11,9 +11,8 @@
 		Represents geometric shapes as a set of absolute, discrete points
 '''
 
-
 # Imports
-
+from Object import Object
 
 
 #-----------------------------------------------#

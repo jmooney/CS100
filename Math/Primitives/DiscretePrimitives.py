@@ -8,7 +8,7 @@
 	Date:		1/22/2013
 
 	Description:
-		Represents geometric shapes as a set of discrete points
+		Represents geometric shapes as a set of discrete localPoints
 '''
 
 
@@ -27,10 +27,7 @@ class DiscretePrimitive(VertexDataSource):
 
 	def __initP__(self, **kwArgs):
 		super().__initP__(**kwArgs)
-		self._points 	= []
-		
-		self._vis = []
-		self._drawStyle = None
+		self._localPoints 	= []
 		
 		
 	def __initC__(self, **kwArgs):
@@ -48,18 +45,18 @@ class DiscretePrimitive(VertexDataSource):
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def getVertexData(self):
-		return len(self._points), self._drawStyle, self._vis, self._buildVLD()
+		return len(self._localPoints), self._drawStyle, self._vis, self._buildVLD()
 	
 
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def _buildVIS(self):
 		if not self._vis:
-			self._vis = list(range(len(self._points)))
+			self._vis = list(range(len(self._localPoints)))
 			
 	def _buildVLD(self):
 		data = []
-		for p in self._points:
+		for p in self._localPoints:
 			data.append(p.x)
 			data.append(p.y)
 		return [('v2f', data)]
@@ -78,7 +75,7 @@ class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 	
 	def _buildPoints(self):
 		self._drawStyle = GL_TRIANGLE_FAN
-		self._points.append(vec())
+		self._localPoints.append(vec())
 		
 		a = self._a;	b = self._b
 		
@@ -91,10 +88,10 @@ class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 			c = math.cos(tAngle)
 
 			p = vec(a.x*c + b.x*s, a.y*c + b.y*s)
-			self._points.append(p)
+			self._localPoints.append(p)
 			
 			tAngle += tStep
-		self._vis = list(range(len(self._points))) + [1]
+		self._vis = list(range(len(self._localPoints))) + [1]
 	
 		
 #------------------------------------------------------#
@@ -104,7 +101,7 @@ class DiscreteRect(DiscretePrimitive, GeometricRect):
 		self._drawStyle = GL_QUADS
 
 		w = self._width;	h=self._height
-		self._points[:] = [vec(-w, -h), vec(w, -h), vec(w, h), vec(-w, h)]
+		self._localPoints[:] = [vec(-w, -h), vec(w, -h), vec(w, h), vec(-w, h)]
 		
 
 class DiscreteCircle(DiscreteEllipse):
@@ -114,10 +111,10 @@ class DiscreteCircle(DiscreteEllipse):
 class DiscreteTriangle(DiscretePrimitive, GeometricTriangle):
 	def _buildPoints(self):
 		self._drawStyle = GL_TRIANGLES
-		self._points[:] = [self._pVecs[0].copy(), self._pVecs[1].copy(), self._pVecs[2].copy()]
+		self._localPoints[:] = [self._pVecs[0].copy(), self._pVecs[1].copy(), self._pVecs[2].copy()]
 		
 class DiscreteLine(DiscretePrimitive, GeometricLine):
 	def _buildPoints(self):
 		self._drawStyle = GL_LINES
-		self._points[:] = [vec(), self._endVec.copy()]
+		self._localPoints[:] = [vec(), self._endVec.copy()]
 		

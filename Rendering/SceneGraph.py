@@ -36,6 +36,7 @@ class SceneGraph(TransformationGraph):
 		
 		for transformable in n._transformables:
 			transformable.draw()
+					
 		for child in n._children:
 			self._drawNode(child)
 			
