@@ -111,17 +111,13 @@ class Animation(Resource):
 		#	Read Data
 		frameIndex = frameLineTokens.group(1)
 		xStart = frameLineTokens.group(2);		yStart = frameLineTokens.group(3)
-		width  = frameLineTokens.group(4);		height = frameLineTokens.group(5)
-		
-		disptime = None;	units = None;
-		try:
-			disptime = float(frameLineTokens.group(6));	units = frameLineTokens.group(7)
-		except IndexError:
-			pass
+		width  = frameLineTokens.group(4);		height = frameLineTokens.group(5)	
+		disptime = frameLineTokens.group(6);	units = frameLineTokens.group(7)
+	
 		
 		#	Create the Frame
 		imgReg = activeImage.get_region(int(xStart), int(yStart), int(width), int(height))
-		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, disptime, units))
+		self._frames.insert(int(frameIndex), AnimationFrame(imgReg, float(disptime), units))
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''

@@ -1,0 +1,28 @@
+
+	Author:		John Mooney
+	Project:	CS100
+	
+
+	1. Refactor the __init__, __initP__, and __initC__ structure:
+		- Ideally each class has one __init__ method
+		- Parent classes may use getter functions to give child privelage in setting data (current initC)
+		
+	2. Refactor the TransformationGraph and SceneGraph
+		- Create one underlying tree graph structure, where each 'Graph' provides an interface of functionality
+		- Allow for multiple types of graphs such as MessageListener etc..
+		
+	3. Refactor OpenGL State Groups
+		- Create dynamic group-creation and single-referencing system
+
+	5. Scene Object and Primitive Resizing
+		- Exactly what it says
+		
+	4. Clean Comments/Documentation
+		- Establish convention for commentation in classes
+		
+	5. Create batchSubNodes() within Scene Graph.
+		- Allows a node to permenantly batch the rendering aspects of lower nodes for optimization
+		
+	6. Performance optimizations/tests. 
+		- Remove 'localPos' in LineDrawing
+		- Construct the line horizontally, and rotate the node to the desired position

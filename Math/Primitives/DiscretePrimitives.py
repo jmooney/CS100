@@ -101,7 +101,14 @@ class DiscreteRect(DiscretePrimitive, GeometricRect):
 		self._drawStyle = GL_QUADS
 
 		w = self._width;	h=self._height
-		self._localPoints[:] = [vec(-w, -h), vec(w, -h), vec(w, h), vec(-w, h)]
+		self._localPoints[:] = [vec(-w/2, -h/2), vec(w/2, -h/2), vec(w/2, h/2), vec(-w/2, h/2)]
+		
+	def resize(self, w, h):
+		self._width = w
+		self._height = h
+		
+		self._buildPoints()
+		self._sceneObject._updateData()
 		
 
 class DiscreteCircle(DiscreteEllipse):
