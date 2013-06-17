@@ -19,10 +19,10 @@
 		
 	4. Clean Comments/Documentation
 		- Establish convention for commentation in classes
-		
-	5. Create batchSubNodes() within Scene Graph.
+
+	5. Create batchSubNodes() within Scene Graph
 		- Allows a node to permenantly batch the rendering aspects of lower nodes for optimization
-		
-	6. Performance optimizations/tests. 
+
+	6. Performance optimizations/tests.
 		- Remove 'localPos' in LineDrawing
 		- Construct the line horizontally, and rotate the node to the desired position
