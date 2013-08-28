@@ -10,9 +10,6 @@
 	Description:
 		The Main-Game Transform Graph; Handles all transformations within CS100
 		using a tree structure.
-			
-	Refactoring:
-		- Implement a single tree hierarchy, where this is a component on top of the underllying system 
 		
 '''
 
@@ -23,23 +20,12 @@ from tools import getDictValue
 
 #--------------------------------------------------#
 
-class TransformationGraph(object):
-
-	def __init__(self):
-		super().__init__()
-		self._rootNode = Transform()
-
-		
-	''''''''''''''''''''''''''''''''''''''''''
-		
-	def getRoot(self):
-		return self._rootNode
+class TransformationGraph(TreeModifier):
 
 	def newTransform(self, **kwArgs):
-		return self._rootNode.createChild(**kwArgs)
-	
+		pass
 
-	
+
 '''
 	
 	Class:		_Transform

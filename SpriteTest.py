@@ -28,12 +28,13 @@ for root, direcs, files in os.walk(os.getcwd()):
 # Imports
 import Color
 
-from Vector import vec
-from Sprite import Sprite
 from Renderer import Renderer
-from Animation import Animation
 from TransformationGraph import Transform
 from ResourceManager import ResourceManager
+
+from Vector import vec
+from Sprite import Sprite
+from Animation import Animation
 
 #-------------------------------------------------------#	
 
@@ -52,31 +53,21 @@ rm.registerExtension(".bmp", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".png", "img", ["img"], pyglet.image.load)
 rm.registerExtension(".anim", "anim", ["anim"], Animation)
 
-anim1 = rm.request("CharizardEvolve.anim")
-anim2 = rm.request("PShip.anim")
+im = rm.request("C:/Users/Bonsackjohn/Pictures/Misc/Triforce.jpg")
 
-s1 = Sprite(anim1, sg.newTransform())
-s2 = Sprite(anim2, sg.newTransform(t=vec(-200,100)))
+sp = pyglet.sprite.Sprite(im, x=im.width/8, y=-im.height/2)
+sp2 = Sprite(im, sg.newTransform(t=vec(-im.width*5/8, 0)))
 
-s1.setAnimation("Alternating")
-s2.setAnimation("Looping")
-
-
-print("")
-rm.debugDisplay()
-print("")
-
-
+pyglet.gl.glClearColor(1,1,1,0);
 def update(dt):
-	s1.update(dt)
-	s2.update(dt)
-
+	pass
 	
 	
 @window.event
 def on_draw():
 	window.clear()
 	rendMan.render()
+	sp.draw()
 
 pyglet.clock.schedule(update)
 pyglet.app.run()

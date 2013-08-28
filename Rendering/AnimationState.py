@@ -8,28 +8,21 @@
 	Date:		4/7/2013
 
 	Description:
-			An instance of an animation
+			An instance of an animation. Manages animation playback/pausing etc.
 '''
 
 
 # Imports
-from Object import Object
 
 
 #-----------------------------------------------#
 
-class AnimationState(Object):
+class AnimationState(object):
 
 	validStates = ["Idle", "Looping", "Alternating", "Iterating"]
 
-	def __init__(self, animation=None, **kwArgs):
+	def __init__(self, animation=None):
 		super().__init__()
-		if animation:
-			self.setAnimation(animation)
-		
-		
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
 		
 		self._state	= "Idle"
 
@@ -37,6 +30,9 @@ class AnimationState(Object):
 		self._frameIndex 	= 0
 		self._animation 	= None
 		self._animationDirection = 1
+		
+		if animation:
+			self.setAnimation(animation)
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -111,10 +107,10 @@ class AnimationState(Object):
 		
 #-----------------------------------------------------#
 
-class _FrameState(Object):
+class _FrameState(object):
 
-	def __init__(self, animFrame, **kwArgs):
-		super().__init__(**kwArgs)
+	def __init__(self, animFrame):
+		super().__init__()
 		
 		self._animationFrame = animFrame
 		self._units	= animFrame.getUnits()

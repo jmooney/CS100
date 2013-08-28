@@ -8,7 +8,8 @@
 	Date:		2/27/2013
 
 	Description:
-		A SceneGraph for drawing objects
+		Handles all drawing of scene nodes ad objects
+		All entities must be organized within a transformation graph
 '''
 
 

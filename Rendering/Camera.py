@@ -8,7 +8,8 @@
 	Date:		2/27/2013
 
 	Description:
-		A viewing transformation handler
+		Manages OpenGL Viewport Projections from a 3D point in the world
+		Renders the scene from a given perspective
 '''
 
 
@@ -23,9 +24,9 @@ from Transformable import Transformable
 
 class Camera(Transformable):
 	
-	def __init__(self, winDimensions, **kwArgs):
+	def __init__(self, winDimensions, transformable=None):
+		super().__init__(transformable)
 		self._winDimensions = winDimensions
-		super().__init__(**kwArgs)
 	
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -42,6 +43,7 @@ class Camera(Transformable):
 					p.x, p.y, -1.0,
 					sin(-r), cos(-r), 0.0)
 		glScalef(s.x, s.y, 1)
+		
 		
 	def focus(self):
 		w = self._winDimensions[0];		h = self._winDimensions[1]

@@ -9,40 +9,25 @@
 
 	Description:
 		A Transformable entity within the Game - has a position, rotation, scale in the world
+		Manages data consistency using various function interfaces on________()
 '''
 
 # Imports
-from Object import Object
-
 from Vector import vec
 from tools import getDictValue
 
-class Transformable(Object):
+class Transformable(object):
 	
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
+	def __init__(self, transform=None):
+		super().__init__()
 		
-		self._transform 	= None
-		self._worldPos 		= vec()
-		self._worldRot 		= 0.0
-		self._worldScale 	= vec(1, 1)
 		self._lastTransformation = [False, [0,0,0]]
 		
-		'''		Temporary Fix		'''
 		self.isDrawn = True
-		
+		self._transform = None
+		self.setTransform(transform)
 
-	def __initC__(self, **kwArgs):
-		self._localPos		= getDictValue(kwArgs, vec(), ['lp', 'localPos'])
-		self._localRot		= getDictValue(kwArgs, 0.0, ['lr', 'localRot'])
-		self._localScale	= getDictValue(kwArgs, vec(1, 1), ['ls', 'localScale'])
-
-		t = getDictValue(kwArgs, None, ['t', 'transform'])
-		if(t):
-			self.setTransform(t)
-			self._onTransformation(self._lastTransformation[1])
 		
-		super().__initC__(**kwArgs)
 
 	''''''''''''''''''''''''''''''''''''''''''
 	
@@ -50,18 +35,15 @@ class Transformable(Object):
 		if self._lastTransformation[0]:
 			self._onTransformation(self._lastTransformation[1])
 			
-
-	#################################
-	#	Transform Setters/Getters	#
-	#################################
-	
+			
+	''''''''''''''''''''''''''''''''''''''''''
 
 	def getPosition(self):
-		return self._worldPos
+		return self._transform.getTranslation()
 	def getRotation(self):
-		return self._worldRot
+		return self._transform.getRotation()
 	def getScale(self):
-		return self._worldScale
+		return self._transform.getScale()
 	
 	
 	'''	Setters '''
@@ -90,43 +72,37 @@ class Transformable(Object):
 		self._transform.setScale2f(x, y)
 
 		
-	#############################
-	#		Getters/Setters		#
-	#############################
+	''''''''''''''''''''''''''''''''''''''''''
 
 	def getTransform(self):
 		return self._transform
+
 	def setTransform(self, node):
-		self._transform = node
-		node._addTransformable(self)
+		if node and not self._transform:
+			self._transform = node
+			node._addTransformable(self)
+			self._onTransformation(self._lastTransformation[1])
+			return True
+		return False
+		
 	def removeTransform(self):
 		t = self._transform
 		
 		self._transform._removeTransformable(self)
 		self._transform = None
 		
-		self._worldPos 		= vec()
-		self._worldRot		= 0.0
-		self._worldScale	= vec(1,1)
-		
 		return t
 		
-		
-	#################################
-	#		Data Maintenance		#
-	#################################
+	
+	''''''''''''''''''''''''''''''''''''''''''
 	
 	def _onTransformation(self, transformations):
 		self._lastTransformation[0] = False;	self._lastTransformation[1] = [0,0,0]
 		
-
+		
 	def _onTranslation(self, dif):
-		self._worldPos  	= self._localPos + self._transform.getTranslation()
 		self._lastTransformation[0] = True;	self._lastTransformation[1][0] = dif
 	def _onRotation(self, dif):
-		self._worldRot  	= self._localRot + self._transform.getRotation()
 		self._lastTransformation[0] = True;	self._lastTransformation[1][1] = dif
 	def _onScale(self, dif):
-		self._worldScale 	= self._localScale * self._transform.getScale()
 		self._lastTransformation[0] = True;	self._lastTransformation[1][2] = dif
-		

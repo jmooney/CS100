@@ -8,16 +8,15 @@
 	Date:		2/26/2013
 
 	Description:
-		Represents geometric shapes as a set of absolute, discrete points
+		Represents geometric shapes as a set of absolute world-coordinated, discrete points
 '''
 
 # Imports
-from Object import Object
 
 
 #-----------------------------------------------#
 
-class AbsolutePrimitive(Object):
+class AbsolutePrimitive(object):
 
 	def __initC__(self, **kwArgs):
 		self.__data = self._points[:]

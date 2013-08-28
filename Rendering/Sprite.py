@@ -8,7 +8,8 @@
 	Date:		3/29/2013
 
 	Description:
-		An on screen image instance
+		Represents an instance of an image
+		Handles drawing/loading and provides an interface to underlying image data
 '''
 
 # Imports
@@ -24,8 +25,8 @@ from DiscretePrimitives import DiscreteRect
 
 class Sprite(Transformable):
 
-	def __init__(self, imageSrc, **kwArgs):
-		super().__init__(**kwArgs)
+	def __init__(self, imageSrc, transform=None, **kwArgs):
+		super().__init__(transform)
 
 		#	Set Image/Animation
 		if isinstance(imageSrc, Animation):
@@ -36,9 +37,10 @@ class Sprite(Transformable):
 			self._texture = imageSrc.get_texture()
 			
 		#	Create the Scene Object representation
-		self._sceneObject = SceneObject(dataSrc = DiscreteRect(self._texture.width, self._texture.height),	\
-			t=self.getTransform(), ed=[('t3f', self._texture.tex_coords)], batch=kwArgs.get('batch', None), group=kwArgs.get('group', None))
-		self._sceneObject.isDrawn = False
+		self._sceneObject = SceneObject(self.getTransform(), dataSrc=DiscreteRect(self._texture.width, self._texture.height),	\
+			ed=[('t3f', self._texture.tex_coords)], **kwArgs)
+		self._sceneObject.isDrawn = False  
+		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	

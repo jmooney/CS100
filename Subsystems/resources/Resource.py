@@ -8,24 +8,27 @@
 	Date:		4/20/2013
 
 	Description:
-		A resource within the game
+		Provides an interface for loading resources within the game. 
+		Resources include external data such as animations, images, etc..
 '''
 
 # Imports
-from Object import Object
 
 
 #-------------------------------------------------#
 
-class Resource(Object):
+class Resource(object):
 	
-	def __init__(self, filename, **kwArgs):
+	def __init__(self, filename):
+		super().__init__()
+		
 		self._filename = filename
-		super().__init__(**kwArgs)
 		
-	def __initC__(self, **kwArgs):
+		self._preLoad()
 		self._load(self._filename)
-		super().__initC__(**kwArgs)
 		
+	
+	def _preLoad(self):
+		raise NotImplementedError
 	def _load(self):
 		raise NotImplementedError

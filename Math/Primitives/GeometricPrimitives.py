@@ -8,64 +8,62 @@
 	Date:		2/26/2013
 
 	Description:
-		Represents geometric primitives
+		Geometric primitive representations and data
 '''
 
 
 # Imports
-from Object import Object
 from Vector import vec
 from tools import getDictValue
 
 
 #------------------------------------------------------#
 
-class GeometricEllipse(Object):
+class GeometricEllipse(object):
 
-	def __init__(self, a, b, **kwArgs):
+	def __init__(self, a, b):
+		super().__init__()
+		
 		self._a = vec(a, 0)
 		self._b = vec(0, b)
 		
-		super().__init__(**kwArgs)
 		
 
 #------------------------------------------------------#
 
-class GeometricRect(Object):
+class GeometricRect(object):
 	
-	def __init__(self, w, h, **kwArgs):
+	def __init__(self, w, h):
+		super().__init__()
+		
 		self._width 	= w
 		self._height 	= h
 		self._diagonal 	= vec(w/2, h/2)
 		
-		super().__init__(**kwArgs)
 		
 
 #------------------------------------------------------#
 
-class GeometricCircle(Object):
+class GeometricCircle(object):
 
-	def __init__(self, radius, **kwArgs):
+	def __init__(self, radius):
+		super().__init__()
 		self._radius = radius
-		super().__init__(**kwArgs)
 		
 
 #------------------------------------------------------#
 
-class GeometricTriangle(Object):
+class GeometricTriangle(object):
 
-	def __init__(self, points, **kwArgs):
+	def __init__(self, points):
+		super().__init__()
 		self._pVecs	= points
-		super().__init__(**kwArgs)
 		
 
 #------------------------------------------------------#
 
-class GeometricLine(Object):
+class GeometricLine(object):
 
-	def __init__(self, eVec, **kwArgs):
+	def __init__(self, eVec):
+		super().__init__()
 		self._endVec = eVec
-		super().__init__(**kwArgs)
-		
-		
-#------------------------------------------------------#

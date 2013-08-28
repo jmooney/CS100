@@ -20,8 +20,8 @@ from DiscretePrimitives import *
 
 class CollisionPrimitive(Transformable):
 	
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
+	def __init__(self, transform=None):
+		super().__initP__(transform)
 		
 		self._listeners = []
 		self._worldPoints = []

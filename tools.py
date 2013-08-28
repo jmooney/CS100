@@ -30,9 +30,11 @@ def getValidIndex(prevIndex, increment, cap):
 
 def getDictValue(dict, defaultValue, possibleValues, raiseError=False):
 	for val in possibleValues:
-		if(val in dict):
+		try:
 			return dict[val]
-			
+		except KeyError:
+			continue
+				
 	if not raiseError:
 		return defaultValue
 	else:

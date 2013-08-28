@@ -9,16 +9,14 @@
 
 	Description:
 		Converts basic vertex data into a drawable object
+		Vertex data sources include explicit parameters, implicit kwArgs, and a dataSrc Object
 '''
 
 # Imports
-import Color
 from pyglet.graphics import (vertex_list_indexed, GL_LINES)
 
-
-from Object import Object
+import Color
 from Transformable import Transformable
-
 from tools import getDictValue
 
 
@@ -26,8 +24,8 @@ from tools import getDictValue
 
 class SceneObject(Transformable):
 	
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
+	def __init__(self, transform=None, **kwArgs):
+		super().__init__(transform)
 		
 		self._batch = getDictValue(kwArgs, None, ['b', 'batch'])
 		self._group = getDictValue(kwArgs, None, ['g', 'group'])
@@ -38,6 +36,7 @@ class SceneObject(Transformable):
 		
 		numVerts, vertexIndices, vertexListData = self._mergeData(srcData, expData, impData, kwArgs)
 		self._buildVertexList(numVerts, vertexIndices, vertexListData)
+	
 	
 	def __del__(self):
 		self._vertexList.delete()	
@@ -164,16 +163,18 @@ class SceneObject(Transformable):
 		self._vertexList.colors[:] = color*self._numVerts
 	
 
+	
 #-----------------------------------------------------#
 
-class VertexDataSource(Object):
+class VertexDataSource(object):
 
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
+	def __init__(self, *args):
+		super().__init__(*args)
 		
 		self._vis = []
 		self._drawStyle = None
 
+		
 	#	Returns NumVerts, drawStyle, vertexIndices, formattedData
 	def getVertexData(self):
 		raise NotImplementedError

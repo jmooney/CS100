@@ -8,13 +8,12 @@
 	Date:		4/7/2013
 
 	Description:
-		An animation:
+		Provides loading and data access for animation data:
 			- A series of image regions and timing information
 '''
 
 
 # Imports
-from Object import Object
 from Resource import Resource
 from ResourceManager import ResourceManager
 
@@ -25,12 +24,10 @@ import re
 
 class Animation(Resource):
 
-	def __initC__(self, **kwArgs):
-		self._frames = []
-		super().__initC__(**kwArgs)
-		
 	
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	def _preLoad(self):
+		self._frames = []
+	
 	
 	def _load(self, filename):
 		with open(filename, 'r') as of:
@@ -125,10 +122,11 @@ class Animation(Resource):
 	def getFrameCount(self):
 		return len(self._frames)
 		
-		
+	
+	
 #-----------------------------------------------#
 
-class AnimationFrame(Object):
+class AnimationFrame(object):
 	
 	def __init__(self, image, time, units, **kwArgs):
 		super().__init__(**kwArgs)
@@ -146,3 +144,4 @@ class AnimationFrame(Object):
 		return self._disptime
 	def getImage(self):
 		return self._image
+		

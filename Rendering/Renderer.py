@@ -8,33 +8,32 @@
 	Date:		2/26/2013
 
 	Description:
-		Prepares and Renders OpenGL frame
+		Handles rendering of the main display
+		Utilizes the active camera and scene graphs for rendering
 '''
 
 
 # Imports
 from pyglet.gl import (glClear, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)
 
-from Object import Object
-from SceneGraph import SceneGraph
 from Camera import Camera
 from tools import getDictValue
+from SceneGraph import SceneGraph
 from TransformationGraph import Transform
 
 
 #------------------------------------------------------#
 
-class Renderer(Object):
+class Renderer(object):
 
 	activeRenderer = None
 	
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
+	def __init__(self, windowSize):
+		super().__init__()
 		
 		self._sceneGraph 	= SceneGraph()
-		self._camera 		= Camera(getDictValue(kwArgs, None, ['ws', 'winSize', 'windowSize'], True), t=Transform())
+		self._camera 		= Camera(windowSize, Transform())
 
-		self._camera.focus()
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -51,7 +50,8 @@ class Renderer(Object):
 	@classmethod
 	def getRenderer(cls):
 		return cls.activeRenderer
-	
+
+		
 	def setSceneGraph(self, sg):
 		self._sceneGraph = sg
 	def getSceneGraph(self):
@@ -61,5 +61,4 @@ class Renderer(Object):
 		self._camera = c
 	def getCamera(self):
 		return self._camera
-	
-		
+

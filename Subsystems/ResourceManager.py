@@ -24,24 +24,19 @@
 
 
 # Imports
-from Object import Object
 import os
-	
+
 
 #------------------------------------------#
 
-class ResourceManager(Object):
+class ResourceManager(object):
 
 	activeManager = None
 	
-	def __init__(self, dataDirectory, **kwArgs):
-		super().__init__(**kwArgs)
+	def __init__(self, dataDirectory):
+		super().__init__()	
 		self._dataDirectory = dataDirectory
-		
-		
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
-		
+	
 		self._resources = {}
 		self._resourceGroups = {}
 		self._resourceGroupStack = []
@@ -163,16 +158,15 @@ class ResourceManager(Object):
 				print("\t\t\t" + rsId)
 
 				
+				
 #-------------------------------------------#
 	
-class ResourceGroup(Object):
+class ResourceGroup(object):
 
-	def __init__(self, id, **kwArgs):
+	def __init__(self, id):
+		super().__init__()
+		
 		self.id = id
-		super().__init__(**kwArgs)
-
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
 		self._resourceIds = []
 
 

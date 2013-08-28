@@ -1,85 +1,57 @@
 
 '''
 
-	Project:	CS100
-	Title:		Tree
-
-	Author:		John Mooney
-	Date:		4/22/2013
-
+	Author: John Mooney
+	Date:	5/28/2013
+	
 	Description:
-		A Tree graph for representing relationships
+		Provides a common interface for building/using a tree data structure
+	
 '''
 
-
-# Imports
-
-
-#--------------------------------------------------#
-
-class Tree(Object):
+class Tree(object):
 	
-	def __init__(self, **kwArgs):
-		super().__init__()
+	def __init__(self):
+		super().__init__(self)
+		self._root = _Node()
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	def getRoot(self);
+		return self._root
 		
-		self._rootNode = None
-		self._injectedComponents = []
-	
-	''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def addComponent(self, componentCreator):
-		pass
-	
-	def getRoot(self):
-		return self._rootNode
 	def newNode(self):
-		return self._rootNode.createChild()
+		return self._root.createChild()
+
+		
+		
+#--------------------------------------------------------#
+	
+class TreeModifier(Tree):
+	
+	def __init__(self, base):
+		self._base = base
+			
+	def getRoot(self);
+		return self._base.getRoot()
+
 		
 
-#--------------------------------------------------#
+#--------------------------------------------------------#
 
-class Node(Object):
+class _Node(object):
 
-	def __init__(self, **kwArgs):
-		super().__init__(**kwArgs)
-		
+	def __init__(self):
+		super().__init__(self)
 		self._parent = None
 		self._children = []
-		self._components = []
 		
-	
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''	
 	def createChild(self):
-		n = Node()
-		n.setParent(self)
-		return n
+		nn = _Node()
+		self._children.append(nn)
+		nn.setParent(self)
+		return nn
 		
-	
-	def setParent(self, n):
-		if self._parent:
-			self._removeParent()
-		
-		self._parent = n
-		self._parent._children.append(self)
-		self._updateComponents()
-		
-	def removeParent(self):
-		self._parent._children.remove(self)
-		self._parent = None
-		self._updateComponents()
-
-		
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def _addComponent(self, componentCreator, kwArgs):
-		c = creator(**kwArgs)
-		
-		c._node = self
-		self._components.append(c)
-		self._updateComponents()
-		
-		
-	def _updateComponents(self):
-		for c in self._components:
-			c.update()
+	def setParent(self, p):
+		self._parent = p

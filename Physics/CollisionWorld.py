@@ -8,20 +8,21 @@
 	Date:		4/21/2013
 
 	Description:
-		Handles collision detection on all collision primitives
+		Handles collision detection on a set of collision primitives
+		
 '''
 
 
 # Imports
-from Object import Object
+
 
 
 #-------------------------------------------------#
 
-class CollisionWorld(Object):
+class CollisionWorld(object):
 	
-	def __init__(self, **kwArgs):
-		super().__init__(**kwArgs)
+	def __init__(self):
+		super().__init__()
 		self._collisionPrimitives = []
 		
 		

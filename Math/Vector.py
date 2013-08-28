@@ -8,17 +8,16 @@
 	Date:		06/22/2012
 
 	Description:
-		A 2D Vector within Sketch Space. 
+		A 2D Vector 
 '''
 
 # Imports
-from Object import Object
-
 from math import sqrt
 from math import pow
 from math import acos
 
 from tools import *
+
 
 '''
 	Class: 	Vector
@@ -26,29 +25,18 @@ from tools import *
 		A 2D Vector Class.
 	
 '''
-class vec(Object):
+class vec(object):
 	
-	def __init__(self, x=0.0, y=0.0, **kwArgs):
-		kwArgs['x'] = x;	kwArgs['y'] = y
-		super().__init__(**kwArgs)
-		
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
-		
-		tx = getDictValue(kwArgs, 0.0, ['x'], True)
-		ty = getDictValue(kwArgs, 0.0, ['y'], True)
-		
+	def __init__(self, vx=0.0, vy=0.0):
 		try:
-			self.x = tx.x
-			self.y = tx.y
+			self.x = vx.x
+			self.y = vx.y
 		except AttributeError:
-			self.x = float(tx)
-			self.y = float(ty)
+			self.x = float(vx)
+			self.y = float(vy)
 			
-
-	#########################################
-	#	Getter/Setter Methods		#
-	#########################################
+			
+	''''''''''''''''''''''''''''''''''''''''''
 
 	def setX(self, x):
 		self.x = float(x)
@@ -79,10 +67,8 @@ class vec(Object):
 			raise IndexError("Invalid Vector Access: " + str(index))
 
 		
-	#########################################
-	#	Operational Functions		#
-	#########################################
-	
+	''''''''''''''''''''''''''''''''''''''''''	
+		
 	def copy(self):
 		return vec(self.x, self.y)
 	def length(self):
@@ -103,7 +89,8 @@ class vec(Object):
 		self.x /= m
 		self.y /= m
 
-		
+	''''''''''''''''''''''''''''''''''''''''''
+
 	'''	Vector Operations	'''
 	def dotP(self, v):
 		return self.x*v.x + self.y*v.y
@@ -114,12 +101,10 @@ class vec(Object):
 			return -acos(self.dotP(vec))
 	def getAngleTo(self, vec):
 		return self.unit().getUnitAngleTo(vec.unit())
-		
-
-	#################################
-	#	Vector Operations	#
-	#################################
-
+	
+	
+	''''''''''''''''''''''''''''''''''''''''''
+	
 	'''	Vector Operations	'''
 	def __add__(self, v):
 		return vec(self.x + v.x, self.y + v.y)
@@ -164,9 +149,8 @@ class vec(Object):
 		return self
 
 		
-	#################################
-	#	Comparison, et all	#
-	#################################
+	''''''''''''''''''''''''''''''''''''''''''
+	
 	
 	def __eq__(self, v):
 		if(v == None):
@@ -184,6 +168,7 @@ class vec(Object):
 	def __str__(self):
 		return "<" + str(self.x) + ", " + str(self.y) + ">"
 
+		
 ZeroVector 	= vec()
 XAxisVector	= vec(1,0)
 YAxisVector	= vec(0,1)

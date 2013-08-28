@@ -25,15 +25,12 @@ from tools import twoPi
 
 class DiscretePrimitive(VertexDataSource):
 
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
-		self._localPoints 	= []
+	def __init__(self, *args):
+		super().__init__(*args)
 		
-		
-	def __initC__(self, **kwArgs):
+		self._localPoints = []
 		self._buildPoints()
 		self._buildVIS()
-		super().__initC__(**kwArgs)
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''
@@ -66,9 +63,9 @@ class DiscretePrimitive(VertexDataSource):
 
 class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 	
-	def __initP__(self, **kwArgs):
-		super().__initP__(**kwArgs)
-		self._triangleCount = getDictValue(kwArgs, 26, ['tc', 'triangleCount'])
+	def __init__(self, a, b, tc=26):
+		super().__init__(a, b)
+		self._triangleCount = tc
 
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -97,6 +94,7 @@ class DiscreteEllipse(DiscretePrimitive, GeometricEllipse):
 #------------------------------------------------------#
 
 class DiscreteRect(DiscretePrimitive, GeometricRect):
+
 	def _buildPoints(self):
 		self._drawStyle = GL_QUADS
 
@@ -112,8 +110,8 @@ class DiscreteRect(DiscretePrimitive, GeometricRect):
 		
 
 class DiscreteCircle(DiscreteEllipse):
-	def __init__(self, rad, **kwArgs):
-		super().__init__(rad, rad, **kwArgs)
+	def __init__(self, rad, tc=26):
+		super().__init__(rad, rad, tc)
 		
 class DiscreteTriangle(DiscretePrimitive, GeometricTriangle):
 	def _buildPoints(self):
@@ -124,4 +122,4 @@ class DiscreteLine(DiscretePrimitive, GeometricLine):
 	def _buildPoints(self):
 		self._drawStyle = GL_LINES
 		self._localPoints[:] = [vec(), self._endVec.copy()]
-		
+

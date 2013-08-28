@@ -28,12 +28,12 @@ for root, direcs, files in os.walk(os.getcwd()):
 # Imports
 import Color
 
-from Vector import vec
-from Sprite import Sprite
 from Renderer import Renderer
-from Animation import Animation
 from TransformationGraph import Transform
-from ResourceManager import ResourceManager
+
+from SceneObject import SceneObject
+from DiscretePrimitives import *
+from Vector import vec
 
 #-------------------------------------------------------#	
 
@@ -41,37 +41,16 @@ window 			= pyglet.window.Window(800, 600)
 winDimensions 	= [800, 600]
 
 rendMan = Renderer(winDimensions)
-Renderer.activeRenderer = rendMan
-
 sg = rendMan.getSceneGraph()
 
-rm = ResourceManager("Tests\\data")
-ResourceManager.activeManager = rm
-rm.registerExtension(".jpg", "img", ["img"], pyglet.image.load)
-rm.registerExtension(".bmp", "img", ["img"], pyglet.image.load)
-rm.registerExtension(".png", "img", ["img"], pyglet.image.load)
-rm.registerExtension(".anim", "anim", ["anim"], Animation)
-
-anim1 = rm.request("CharizardEvolve.anim")
-anim2 = rm.request("PShip.anim")
-
-s1 = Sprite(anim1, sg.newTransform())
-s2 = Sprite(anim2, sg.newTransform(t=vec(-200,100)))
-
-s1.setAnimation("Alternating")
-s2.setAnimation("Looping")
-
-
-print("")
-rm.debugDisplay()
-print("")
+so1 = SceneObject(sg.newTransform(t=vec(150,0)), vs=[vec(-100,-100), vec(100,-100), vec(100,100), vec(-100,100)], ds=GL_LINES,
+	vis = (0, 1, 1, 2, 2, 3, 3, 0),	cs = Color.Purple+Color.Blue+Color.Orange+Color.Green)
+so2 = SceneObject(so1.getTransform().createChild(), dataSrc=DiscreteRect(10, 50), c=Color.Teal)
+so3 = SceneObject(sg.newTransform(), numVerts=3, drawStyle=GL_TRIANGLES, explicitData=[('v2f/static', [-30, -30, 30, -30, 0, 30])])
 
 
 def update(dt):
-	s1.update(dt)
-	s2.update(dt)
-
-	
+	so2.rotate(.005)
 	
 @window.event
 def on_draw():
@@ -81,3 +60,4 @@ def on_draw():
 pyglet.clock.schedule(update)
 pyglet.app.run()
 
+ 
