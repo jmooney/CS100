@@ -31,3 +31,5 @@
 		- If a node parents another and wishes to take control of child node drawing operations
 		- Ex: Sprite and its SceneObject representation
 		
+	8. Refactor Animation to include 'default' options
+		- What do you think?
