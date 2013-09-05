@@ -3,7 +3,7 @@
 	Project:	CS100
 	
 
-	1. Refactor the __init__, __initP__, and __initC__ structure:		- Completed
+	1. COMPLETED - Refactor the __init__, __initP__, and __initC__ structure:
 		- Ideally each class has one __init__ method
 		- Parent classes may use getter functions to give child privilege in setting data (current initC)
 		
@@ -17,7 +17,7 @@
 	5. Scene Object and Primitive Resizing
 		- Exactly what it says
 		
-	4. Clean Comments/Documentation			- Completed
+	4. COMPLETED - Clean Comments/Documentation:haha
 		- Establish convention for commentation in classes
 
 	5. Create batchSubNodes() within Scene Graph
@@ -33,3 +33,8 @@
 		
 	8. Refactor Animation to include 'default' options
 		- What do you think?
+
+	9. Refactor SceneObject and DataSrc:
+		- SceneObject should only function on DataSrc objects
+		- DataSrc should be extended to include custom objects
+		
