@@ -20,16 +20,18 @@
 from Vector import vec
 from Vector import ZeroVector
 from tools import getDictValue
-from Tree import (TreeModifier, NodeModifier)
+from Tree import (TreeModifier, TreeNodeModifier)
 
 
 #--------------------------------------------------#
 
 class TransformationGraph(TreeModifier):
 
-	_nodeModifierName = 'TransformNode'
-	_nodeModifierCreator = TransformNode
-	
+	def __init__(self, baseTree):
+		self._nodeModifierName = 'TransformNode'
+		self._nodeModifierCreator = TransformNode		
+		super().__init__(baseTree)
+
 		
 	''''''''''''''''''''''''''''''''''''''''''
 	
@@ -37,16 +39,16 @@ class TransformationGraph(TreeModifier):
 		return self.getRoot().createChild(**kwArgs)
 	def newTransform(self, **kwArgs):
 		return self.newNode(**kwArgs)
-	
-	
+
+
+
 #--------------------------------------------------#
 
 class TransformNode(TreeNodeModifier):
 
-	_modifierName = 'TransformNode'
-	_modifierCreator = TransformNode
-
 	def __init__(self, baseNode, **kwArgs):
+		self._modifierName = 'TransformNode'
+		self._modifierCreator = TransformNode
 		super().__init__(baseNode)
 		
 		'''	Transform Data '''

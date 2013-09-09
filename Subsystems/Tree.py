@@ -17,39 +17,50 @@
 class Tree(object):
 	
 	def __init__(self):
-		super().__init__(self)
+		super().__init__()
 		self._root = _TreeNode()
 	
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	def getRoot(self);
+	def getRoot(self):
 		return self._root
 	def newNode(self):
 		return self._root.createChild()
+		
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def debugPrint(self, node=None, tabs=''):
+		if not node:
+			node = self.getRoot()
+			
+		print(tabs + str(type(node)))
+		for child in node.getChildren():
+			self.debugPrint(child, tabs+'\t')
 
 		
 #--------------------------------------------------------#
 
 class _TreeNode(object):
 	
-	def __init__(self, modifiers = {}, modifierArgs={}):
-		super().__init__(self)
+	def __init__(self, modifierCreators = {}, modifierArgs={}):
+		super().__init__()
 		
 		self._parent = None
 		
 		self._children = []
 		self._modifiers = {}
-		self._modifierCreators = {}
+		self._modifierCreators = modifierCreators
 		
-		for name, creator in modifierTypes:
+		for name, creator in modifierCreators.items():
 			self._addModifier(name, creator, modifierArgs)
 
 			
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def createChild(self):
-		return self._createChild(self._modifierTypes.copy())
+		return self._createChild(self._modifierCreators.copy(), {})
 
 	def setParent(self, p):
 		if self._parent:
@@ -68,16 +79,15 @@ class _TreeNode(object):
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-	def _createChild(self, modifierTypes, modifierArgs):
-		nn = _TreeNode(modifierTypes, modifierArgs)
+	def _createChild(self, modifierCreators, modifierArgs):
+		nn = _TreeNode(modifierCreators, modifierArgs)
 		nn.setParent(self)
-		self._children.append(nn)
 		return nn
 		
-	def _addModifier(modifierName, creator, modifierArgs):
+	def _addModifier(self, modifierName, creator, modifierArgs = {}):
 		self._modifiers[modifierName] = creator(self, **modifierArgs)
 		self._modifierCreators[modifierName] = creator
-	def _getModifier(modifierName):
+	def _getModifier(self, modifierName):
 		return self._modifiers[modifierName]
 
 
@@ -108,9 +118,9 @@ class TreeNodeModifier(_TreeNode):
 	_modifierCreator = None
 	
 	def __init__(self, baseNode, **kwArgs):
-		self._node = node
-		
-	
+		self._node = baseNode
+				
+			
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def setParent(self, p):
@@ -128,7 +138,7 @@ class TreeNodeModifier(_TreeNode):
 		
 	def getChildren(self):
 		list = []
-		for child in self._children:
+		for child in self._node.getChildren():
 			try:
 				list.append(child._getModifier(self._modifierName))
 			except KeyError:

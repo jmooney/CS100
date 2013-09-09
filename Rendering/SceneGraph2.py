@@ -15,18 +15,20 @@
 
 # Imports
 import math
-from Tree import import TreeModifier
-from TransformationGraph import TransformNode
+from Tree import TreeModifier
+from TransformationGraph2 import TransformNode
 from pyglet.gl import (	glPushMatrix, glPopMatrix,
 	glTranslatef, glRotatef, glScalef	)
 
-
+	
 #------------------------------------------------------#
 
 class SceneGraph(TreeModifier):
 
-	_modifierName = 'SceneNode'
-	_modifierCreator = SceneNode
+	def __init__(self, baseTree):
+		self._nodeModifierName = 'SceneNode'
+		self._nodeModifierCreator = SceneNode
+		super().__init__(baseTree)
 	
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -42,12 +44,11 @@ class SceneGraph(TreeModifier):
 
 class SceneNode(TransformNode):
 	
-	_modifierName = 'SceneNode'
-	_modifierCreator = SceneNode
-	
 	def __init__(self, baseNode, **kwArgs):
 		super().__init__(baseNode, **kwArgs)
-		
+		self._modifierName = 'SceneNode'
+		self._modifierCreator = SceneNode
+
 		self._visible = True
 		self._sceneObjects = []
 		
@@ -62,7 +63,7 @@ class SceneNode(TransformNode):
 		glScalef(self._scale.x, self._scale.y, 1)
 		
 		for sceneObject in self._sceneObjects:
-			if sceneObject._visible
+			if sceneObject._visible:
 				sceneObject.draw()
 		
 		for child in self._node._children:
