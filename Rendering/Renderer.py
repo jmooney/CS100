@@ -28,13 +28,13 @@ class Renderer(object):
 
 	activeRenderer = None
 	
-	def __init__(self, windowSize):
+	def __init__(self, windowSize, sceneGraph):
 		super().__init__()
 		
-		self._sceneGraph 	= SceneGraph()
-		self._camera 		= Camera(windowSize, Transform())
+		self._sceneGraph 	= sceneGraph
+		self._camera 		= Camera(windowSize, sceneGraph.newNode())
 
-		
+
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def render(self):
@@ -43,15 +43,14 @@ class Renderer(object):
 		self._camera.focus()
 		self._camera.view()
 		self._sceneGraph.draw()
-		
-	
+
+
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	@classmethod
 	def getRenderer(cls):
 		return cls.activeRenderer
 
-		
 	def setSceneGraph(self, sg):
 		self._sceneGraph = sg
 	def getSceneGraph(self):

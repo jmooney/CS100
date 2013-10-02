@@ -43,16 +43,21 @@ node2 = baseTree.newNode()
 baseTree.debugPrint();	print()
 sceneGraph.debugPrint();	print()
 transformationGraph.debugPrint();	print()
+print('------------------------------------\n')
 
 sceneNode3 = sceneGraph.newNode()
 baseTree.debugPrint();	print()
 sceneGraph.debugPrint();	print()
 transformationGraph.debugPrint();	print()
+print('------------------------------------\n')
 
-transformNode2 = transformationGraph.newNode()
+sn4 = sceneNode3.createChild()
+sn5 = sn4.createChild()
 baseTree.debugPrint();	print()
 sceneGraph.debugPrint();	print()
 transformationGraph.debugPrint();	print()
+print('------------------------------------\n')
+
 
 def update(dt):
 	pass
