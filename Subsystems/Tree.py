@@ -106,8 +106,8 @@ class TreeModifier(Tree):
 	
 	def getRoot(self):
 		return self._tree._root._getModifier(self._nodeModifierName)
-	def newNode(self):
-		return self.getRoot().createChild()
+	def newNode(self, **modifierArgs):
+		return self.getRoot().createChild(**modifierArgs)
 		
 		
 #--------------------------------------------------------#

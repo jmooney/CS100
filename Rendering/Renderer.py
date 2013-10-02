@@ -46,10 +46,6 @@ class Renderer(object):
 
 
 	''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	@classmethod
-	def getRenderer(cls):
-		return cls.activeRenderer
 
 	def setSceneGraph(self, sg):
 		self._sceneGraph = sg

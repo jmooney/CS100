@@ -16,6 +16,8 @@ import pyglet
 import sys
 import os
 
+from pyglet.graphics import GL_LINES, GL_TRIANGLES
+
 
 '''		Set Search Directory	'''
 for root, direcs, files in os.walk(os.getcwd()):
@@ -29,7 +31,6 @@ from SceneGraph2 import SceneGraph
 from TransformationGraph2 import TransformationGraph
 
 
-
 #-------------------------------------------------------#	
 
 window 			= pyglet.window.Window(800, 600)
@@ -38,6 +39,9 @@ winDimensions 	= [800, 600]
 baseTree = Tree()
 sceneGraph = SceneGraph(baseTree)
 transformationGraph = TransformationGraph(baseTree)
+
+
+#-------------------------------------------------------#
 
 node2 = baseTree.newNode()
 baseTree.debugPrint();	print()

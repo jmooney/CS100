@@ -26,6 +26,7 @@ class Camera(Transformable):
 	
 	def __init__(self, winDimensions, transformable=None):
 		super().__init__(transformable)
+		self._visible=False
 		self._winDimensions = winDimensions
 
 

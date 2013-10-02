@@ -63,7 +63,7 @@ class SceneNode(TransformNode):
 		glScalef(self._scale.x, self._scale.y, 1)
 		
 		for sceneObject in self._sceneObjects:
-			if sceneObject._visible:
+			if sceneObject.isVisible():
 				sceneObject.draw()
 		
 		for child in self._node._children:

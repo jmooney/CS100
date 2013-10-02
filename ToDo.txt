@@ -17,7 +17,7 @@
 	5. Scene Object and Primitive Resizing
 		- Exactly what it says
 		
-	4. COMPLETED - Clean Comments/Documentation:haha
+	4. COMPLETED - Clean Comments/Documentation:
 		- Establish convention for commentation in classes
 
 	5. Create batchSubNodes() within Scene Graph

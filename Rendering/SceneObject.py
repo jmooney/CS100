@@ -36,6 +36,7 @@ class SceneObject(Transformable):
 		
 		numVerts, vertexIndices, vertexListData = self._mergeData(srcData, expData, impData, kwArgs)
 		self._buildVertexList(numVerts, vertexIndices, vertexListData)
+		self._visible = True
 	
 	
 	def __del__(self):
