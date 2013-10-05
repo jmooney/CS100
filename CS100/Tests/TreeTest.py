@@ -14,11 +14,12 @@
 # Imports
 import pyglet
 
-from CS100.Subsystems.Tree import Tree
-from CS100.Rendering.SceneGraph2 import SceneGraph
-from CS100.Space.TransformationGraph2 import TransformationGraph
+import CS100 as Src
+from Src.Subsystems.Tree import Tree
+from Src.Rendering.SceneGraph2 import SceneGraph
+from Src.Space.TransformationGraph2 import TransformationGraph
 
-from pyglet.graphics import (GL_LINES, GL_TRIANGLES)
+from pyglet.graphics import GL_LINES, GL_TRIANGLES
 
 
 
