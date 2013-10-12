@@ -4,7 +4,7 @@
 	Project:	CS100
 	Title:		Renderer
 
-	Author:		John Mooney
+	Author:	John Mooney
 	Date:		2/26/2013
 
 	Description:
@@ -27,8 +27,9 @@ class Renderer(object):
 	def __init__(self, windowSize, sceneGraph):
 		super().__init__()
 		
-		self._sceneGraph 	= sceneGraph
-		self._camera 		= Camera(windowSize, sceneGraph.newNode())
+		self._currentScene = sceneGraph
+		self._camera = Camera(windowSize, sceneGraph.newNode())
+		self._camera.focus()
 
 
 	''''''''''''''''''''''''''''''''''''''''''''''''
@@ -36,9 +37,8 @@ class Renderer(object):
 	def render(self):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		
-		self._camera.focus()
 		self._camera.view()
-		self._sceneGraph.draw()
+		self._currentScene.draw()
 
 
 	''''''''''''''''''''''''''''''''''''''''''''''''

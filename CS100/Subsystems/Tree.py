@@ -123,6 +123,10 @@ class TreeNodeModifier(_TreeNode):
 			
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	def asType(self, modifierTypeName):
+		return self._node._getModifier(modifierTypeName)
+	
+	
 	def setParent(self, p):
 		self._node.setParent(p)
 	def createChild(self, **modifierArgs):

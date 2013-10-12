@@ -7,7 +7,7 @@
 		- Ideally each class has one __init__ method
 		- Parent classes may use getter functions to give child privilege in setting data (current initC)
 		
-	2. Refactor the TransformationGraph and SceneGraph
+	2. COMPLETED - Refactor the TransformationGraph and SceneGraph
 		- Create one underlying tree graph structure, where each 'Graph' provides an interface of functionality
 		- Allow for multiple types of graphs such as MessageListener etc.
 		
@@ -37,6 +37,7 @@
 	9. Refactor SceneObject and DataSrc:
 		- SceneObject should only function on DataSrc objects
 		- DataSrc should be extended to include custom objects
+		- SceneObject should automatically update the vertex-lists if the dataSrc updates
 	
-	10. Refactor file dependences/structure:
+	10. COMPLETED - Refactor file dependences/structure:
 		- Relative imports and the like!

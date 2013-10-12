@@ -26,11 +26,11 @@ class Camera(Transformable):
 	
 	def __init__(self, winDimensions, transformable=None):
 		super().__init__(transformable)
-		self._visible=False
 		self._winDimensions = winDimensions
+		self._visible = False
 
 
-	''''''''''''''''''''''''''''''''''''''''''''''''''
+	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def view(self):
 		glMatrixMode(GL_MODELVIEW)
@@ -56,5 +56,4 @@ class Camera(Transformable):
 		gluOrtho2D(-self._winDimensions[0]/2., self._winDimensions[0]/2., 
 			-self._winDimensions[1]/2., self._winDimensions[1]/2.)
 
-
-	''''''''''''''''''''''''''''''''''''''''''''''''
+	

@@ -4,7 +4,7 @@
 	Project:	CS100
 	Title:		TransformationGraph
 	
-	Author:		John Mooney
+	Author:	John Mooney
 	Date:		10/22/2012
 
 	Description:
@@ -12,50 +12,43 @@
 		using a tree structure.
 			
 	Refactoring:
-		- Implement a single tree hierarchy, where this is a component on top of the underllying system 
+		- Implement a single tree hierarchy, where this is a component on top of the underlying system 
 		
 '''
 
 # Imports
-from CS100.Math.Vector import vec
-from CS100.Math.Vector import ZeroVector
 from CS100.Tools import getDictValue
+from CS100.Math.Vector import (vec, ZeroVector)
+from CS100.Subsystems.Tree import (TreeModifier, TreeNodeModifier)
+
 
 #--------------------------------------------------#
 
-class TransformationGraph(object):
+class TransformationGraph(TreeModifier):
 
-	def __init__(self):
-		super().__init__()
-		self._rootNode = Transform()
+	def __init__(self, baseTree):
+		self._nodeModifierName = 'TransformNode'
+		self._nodeModifierCreator = TransformNode		
+		super().__init__(baseTree)
 
 		
 	''''''''''''''''''''''''''''''''''''''''''
-		
-	def getRoot(self):
-		return self._rootNode
-
+	
+	def newNode(self, **kwArgs):
+		return self.getRoot().createChild(**kwArgs)
 	def newTransform(self, **kwArgs):
-		return self._rootNode.createChild(**kwArgs)
-	
+		return self.newNode(**kwArgs)
 
-	
-'''
-	
-	Class:		_Transform
-	
-	Description:
-		A scene graph node; Contains Entity and Transform Data
-'''
 
-class Transform(object):
 
-	def __init__(self, **kwArgs):
-		super().__init__()
-		
-		'''	Node and Update Values '''
-		self._parent  	= None
-		self._children 	= []
+#--------------------------------------------------#
+
+class TransformNode(TreeNodeModifier):
+
+	def __init__(self, baseNode, **kwArgs):
+		self._modifierName = 'TransformNode'
+		self._modifierCreator = TransformNode
+		super().__init__(baseNode)
 		
 		'''	Transform Data '''
 		self._translate 	= getDictValue(kwArgs, vec(), ['t', 'translate'])
@@ -127,14 +120,6 @@ class Transform(object):
 	def getLocalScale(self):
 		return self._scale.copy()
 		
-	
-	''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def createChild(self, **kwArgs):
-		node = Transform(**kwArgs)
-		node.setParent(self)
-		return node
-		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -152,9 +137,11 @@ class Transform(object):
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def _translateDependents(self):
+		parent = self.getParent()
+		
 		pTrans = vec()
-		if(self._parent):
-			pTrans = self._parent.getTranslation()
+		if parent:
+			pTrans = parent.getTranslation()
 			
 		newTranslate = self._translate + pTrans
 		oldTranslate = self._gTrans.copy()
@@ -163,12 +150,14 @@ class Transform(object):
 			
 			for transformable in self._transformables:
 				transformable._onTranslation(newTranslate-oldTranslate)
-			for child in self._children:
+			for child in self.getChildren():
 				child._translateDependents()
 	def _rotateDependents(self):
+		parent = self.getParent()
+		
 		pRots = 0.0
-		if(self._parent):
-			pRots = self._parent.getRotation()
+		if parent:
+			pRots = parent.getRotation()
 			
 		newRot = self._rotateRads + pRots
 		oldRot = self._gRotRads
@@ -177,12 +166,14 @@ class Transform(object):
 			
 			for transformable in self._transformables:
 				transformable._onRotation(newRot-oldRot)
-			for child in self._children:
+			for child in self.getChildren():
 				child._rotateDependents()
 	def _scaleDependents(self):
+		parent = self.getParent()
+		
 		pScale = vec(1.0, 1.0)
-		if(self._parent):
-			pScale = self._parent.getScale()
+		if parent:
+			pScale = parent.getScale()
 			
 		newScale = self._scale * pScale
 		oldScale = self._gScale
@@ -192,7 +183,7 @@ class Transform(object):
 			
 			for transformable in self._transformables:
 				transformable._onScale(newScale/oldScale)
-			for child in self._children:
+			for child in self.getChildren():
 				child._scaleDependents()
 				
 
@@ -205,14 +196,10 @@ class Transform(object):
 	''''''''''''''''''''''''''''''''''''''''''''''''
 		
 	def setParent(self, p):
-		self.removeParent()
-		self._parent = p
-		
-		p._children.append(self)
+		super().setParent(p)
 		self._updateDependents()
 		
 	def removeParent(self):
-		if(self._parent):
-			self._parent._children.remove(self)
-			self._updateDependents()
-		self._parent = None
+		super().setParent(None)
+		self._updateDependents()
+		

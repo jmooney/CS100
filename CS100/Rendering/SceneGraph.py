@@ -5,7 +5,7 @@
 	Title:		SceneGraph
 
 	Author:		John Mooney
-	Date:		2/27/2013
+	Date:		2/27/2013, 9/5/2013
 
 	Description:
 		Handles all drawing of scene nodes ad objects
@@ -15,31 +15,65 @@
 
 # Imports
 import math
+from CS100.Subsystems.Tree import TreeModifier
+from CS100.Space.TransformationGraph2 import TransformNode
 
-from CS100.Space.TransformationGraph import TransformationGraph
 from pyglet.gl import (	glPushMatrix, glPopMatrix,
 	glTranslatef, glRotatef, glScalef	)
 
-
+	
 #------------------------------------------------------#
 
-class SceneGraph(TransformationGraph):
+class SceneGraph(TreeModifier):
 
+	def __init__(self, baseTree):
+		self._nodeModifierName = 'SceneNode'
+		self._nodeModifierCreator = SceneNode
+		super().__init__(baseTree)
+	
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
 	def draw(self):
-		self._drawNode(self._rootNode)
+		root = self.getRoot()
+		if root._visible:
+			root._draw()
+	
+	
+	
+#------------------------------------------------------#
 
-	def _drawNode(self, n):
+class SceneNode(TransformNode):
+	
+	def __init__(self, baseNode, **kwArgs):
+		super().__init__(baseNode, **kwArgs)
+		self._modifierName = 'SceneNode'
+		self._modifierCreator = SceneNode
+
+		self._visible = True
+		self._sceneObjects = []
+		
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+	def _draw(self):
 		glPushMatrix()
 		
-		glTranslatef(n._translate.x, n._translate.y, 0.0)
-		glRotatef(math.degrees(n._rotateRads), 0, 0, 1)
-		glScalef(n._scale.x, n._scale.y, 1)
+		glTranslatef(self._translate.x, self._translate.y, 0.0)
+		glRotatef(math.degrees(self._rotateRads), 0, 0, 1)
+		glScalef(self._scale.x, self._scale.y, 1)
 		
-		for transformable in n._transformables:
-			if transformable.isDrawn:
-				transformable.draw()
-					
-		for child in n._children:
-			self._drawNode(child)
+		for sceneObject in self._sceneObjects:
+			if sceneObject.isVisible():
+				sceneObject.draw()
+		
+		for child in self._node._children:
+			try:
+				sceneNode = child._getModifier(self._modifierName)
+				if sceneNode._visible:
+					sceneNode._draw()
+			except KeyError:
+				pass
 			
 		glPopMatrix()
+

@@ -13,20 +13,12 @@
 '''
 
 # Imports
-import pyglet.image
-from pyglet.gl import *
-
-from SceneObject import SceneObject
-from AnimationState import AnimationState
-from CS100.Space.Transformable import Transformable
-from CS100.Subsystems.Resources.Animation import Animation
-from CS100.Math.Primitives.DiscretePrimitives import DiscreteRect
 
 
-class Sprite(Transformable):
+class Sprite(SceneObject):
 
-	def __init__(self, imageSrc, transform=None, **kwArgs):
-		super().__init__(transform)
+	def __init__(self, imageSrc, sceneNode=None, **kwArgs):
+		super().__init__(sceneNode)
 
 		#	Set Image/Animation
 		if isinstance(imageSrc, Animation):
@@ -36,11 +28,10 @@ class Sprite(Transformable):
 			self._animation = None
 			self._texture = imageSrc.get_texture()
 			
-		#	Create the Scene Object representation
-		self._sceneObject = SceneObject(self.getTransform(), dataSrc=DiscreteRect(self._texture.width, self._texture.height),	\
-			ed=[('t3f', self._texture.tex_coords)], **kwArgs)
-		self._sceneObject.isDrawn = False  
-		
+		#	Create the Scene Primitive representation
+		self._scenePrimitive = ScenePrimitive(self._sceneNode.createChild(), DiscreteRect(self._texture.width, self._texture.height))
+		self._scenePrimitive.setTexCoords(self._texture.tex_coords)
+			
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -57,7 +48,7 @@ class Sprite(Transformable):
 		glDisable(self._texture.target)
 
 	
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def getImage(self):
 		return self._texture
@@ -66,3 +57,5 @@ class Sprite(Transformable):
 		self._animation.setState(animState)
 	def getAnimation(self):
 		return self._animation
+
+		
