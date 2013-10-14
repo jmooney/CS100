@@ -14,7 +14,7 @@
 
 
 # Imports
-from Camera import Camera
+from .Camera import Camera
 from pyglet.gl import (glClear, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT)
 
 
@@ -29,14 +29,14 @@ class Renderer(object):
 		
 		self._currentScene = sceneGraph
 		self._camera = Camera(windowSize, sceneGraph.newNode())
-		self._camera.focus()
 
-
+		
 	''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def render(self):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		
+		self._camera.focus()
 		self._camera.view()
 		self._currentScene.draw()
 

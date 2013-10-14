@@ -22,15 +22,16 @@
                 <File name="CS100\Rendering\Color.py" />
                 <File name="CS100\Rendering\Renderer.py" />
                 <File name="CS100\Rendering\SceneGraph.py" />
-                <File name="CS100\Rendering\SceneGraph2.py" />
                 <File name="CS100\Rendering\SceneObject.py" />
+                <File name="CS100\Rendering\ScenePrimitive.py" />
+                <File name="CS100\Rendering\Shape.py" />
                 <File name="CS100\Rendering\Sprite.py" />
+                <File name="CS100\Rendering\RenderGroups.py" />
                 <File name="CS100\Rendering\__init__.py" />
             </Folder>
             <Folder name="Space">
                 <File name="CS100\Space\Transformable.py" />
                 <File name="CS100\Space\TransformationGraph.py" />
-                <File name="CS100\Space\TransformationGraph2.py" />
                 <File name="CS100\Space\__init__.py" />
             </Folder>
             <Folder name="Subsystems">
@@ -44,15 +45,18 @@
                 <File name="CS100\Subsystems\__init__.py" />
             </Folder>
             <Folder name="Tests">
-                <File name="CS100\Tests\RMTest.py" />
-                <File name="CS100\Tests\SOTest.py" />
+                <Folder name="old">
+                    <File name="CS100\Tests\old\RMTest.py" />
+                    <File name="CS100\Tests\old\SOTest.py" />
+                </Folder>
                 <File name="CS100\Tests\TreeTest.py" />
-                <File name="CS100\Tests\__init__.py" />
             </Folder>
             <File name="CS100\Tools.py" />
             <File name="CS100\__init__.py" />
         </Folder>
-        <File name="ToDo.txt" />
+        <File name="RenderTest.py" />
+        <File name="RenderTest2.py" />
         <File name="TreeTest.py" />
+        <File name="ToDo.txt" />
     </Project>
 </NotepadPlus>

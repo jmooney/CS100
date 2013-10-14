@@ -26,6 +26,8 @@ from CS100.Subsystems.Tree import (TreeModifier, TreeNodeModifier)
 
 class TransformationGraph(TreeModifier):
 
+	activeGraph = None
+	
 	def __init__(self, baseTree):
 		self._nodeModifierName = 'TransformNode'
 		self._nodeModifierCreator = TransformNode		

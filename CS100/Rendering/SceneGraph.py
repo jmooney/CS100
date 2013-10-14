@@ -16,7 +16,7 @@
 # Imports
 import math
 from CS100.Subsystems.Tree import TreeModifier
-from CS100.Space.TransformationGraph2 import TransformNode
+from CS100.Space.TransformationGraph import TransformNode
 
 from pyglet.gl import (	glPushMatrix, glPopMatrix,
 	glTranslatef, glRotatef, glScalef	)
@@ -26,6 +26,8 @@ from pyglet.gl import (	glPushMatrix, glPopMatrix,
 
 class SceneGraph(TreeModifier):
 
+	activeGraph = None
+	
 	def __init__(self, baseTree):
 		self._nodeModifierName = 'SceneNode'
 		self._nodeModifierCreator = SceneNode
@@ -51,7 +53,7 @@ class SceneNode(TransformNode):
 		self._modifierCreator = SceneNode
 
 		self._visible = True
-		self._sceneObjects = []
+		self._scenePrimitives = []
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -63,9 +65,9 @@ class SceneNode(TransformNode):
 		glRotatef(math.degrees(self._rotateRads), 0, 0, 1)
 		glScalef(self._scale.x, self._scale.y, 1)
 		
-		for sceneObject in self._sceneObjects:
-			if sceneObject.isVisible():
-				sceneObject.draw()
+		for scenePrimitive in self._scenePrimitives:
+			if scenePrimitive.isVisible():
+				scenePrimitive.draw()
 		
 		for child in self._node._children:
 			try:
@@ -77,3 +79,12 @@ class SceneNode(TransformNode):
 			
 		glPopMatrix()
 
+
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def addScenePrimitive(self, obj):
+		self._scenePrimitives.append(obj)
+	def removeScenePrimitive(self, obj):
+		self._scenePrimitives.remove(obj)
+		
+		

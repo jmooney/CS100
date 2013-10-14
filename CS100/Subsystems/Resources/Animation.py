@@ -15,7 +15,7 @@
 
 # Imports
 import re
-from Resource import Resource
+from .Resource import Resource
 from ..ResourceManager import ResourceManager
 
 

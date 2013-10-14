@@ -13,9 +13,10 @@
 
 
 # Imports
-
+from .RenderGroups import TextureGroup
 
 #-----------------------------------------------#
+#	AnimationState
 
 class AnimationState(object):
 
@@ -30,6 +31,7 @@ class AnimationState(object):
 		self._frameIndex 	= 0
 		self._animation 	= None
 		self._animationDirection = 1
+		self._textureGroup = TextureGroup()
 		
 		if animation:
 			self.setAnimation(animation)
@@ -95,6 +97,7 @@ class AnimationState(object):
 	def setFrame(self, frameIndex):
 		self._frame 	 = _FrameState(self._animation.getFrame(frameIndex))
 		self._frameIndex = frameIndex
+		self._textureGroup.setTexture(self.getImage().get_texture())
 		
 	def setAnimation(self, animation):
 		self._state = "Idle"
@@ -104,8 +107,13 @@ class AnimationState(object):
 	def getImage(self):
 		return self._frame._animationFrame.getImage()
 		
+	def getTextureGroup(self):
+		return self._textureGroup
+		
+		
 		
 #-----------------------------------------------------#
+#	FrameState
 
 class _FrameState(object):
 
@@ -130,5 +138,5 @@ class _FrameState(object):
 			self._timeRemaining -= dt
 		
 		return self._timeRemaining <= 0
-
+		
 		
