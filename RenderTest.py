@@ -50,6 +50,7 @@ shape3.removeTransform()
 shape3.setTransform(tempNode.createChild())
 
 shape4 = Shape.Shape([-.1, 0, -.1, 1, -.5, 1, -.5, 1.2, .5, 1.2, .5, 1.0, .1, 1.0, .1, 0], [0, 1, 6, 7, 2, 3, 4, 5])
+shape5 = Shape.Shape([-.29, 0, -.29, 1, -.15, 1, -.15, 0, -.15, .45, -.15, .55, .15, .55, .15, .45, .15, 0, .15, 1, .3, 1, .3, 0], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 
 sp1 = ScenePrimitive(sceneGraph.newNode(t=vec(-250, 0), s=vec(50, 50)), shape1, color=Color.Red, drawStyle=GL_TRIANGLE_FAN)
 sp2 = ScenePrimitive(sceneGraph.newNode(t=vec(-100, 0), s=vec(50, 50)), shape1, color=Color.Green, drawStyle=GL_TRIANGLE_FAN)
@@ -59,12 +60,26 @@ sp4 = ScenePrimitive(tempNode, shape3, color=Color.Orange, drawStyle=GL_QUADS)
 sp5 = ScenePrimitive(sceneGraph.newNode(t=vec(0, 200), s=vec(50, 50)), shape4, drawStyle=GL_QUADS)
 sp5.setColors(Color.Blue*4 + Color.Teal*4)
 
+sp6 = ScenePrimitive(sceneGraph.newNode(t=vec(-200, -200), s=vec(30, 30)), shape4, color=Color.Purple, drawStyle=GL_QUADS)
+sp7 = ScenePrimitive(sceneGraph.newNode(t=vec(200, -200), s=vec(50, 50)), shape5, color=Color.Pink, drawStyle=GL_QUADS)
+
+countdown = 5
+
 
 #	Define Funcs
 
-def update(dt):
+def update(dtSecs):
 	sp3.scale2f(1.001, 1.001)
 	sp4.scale2f(1.001, 1.001)
+	
+	global countdown
+	if countdown > 0:
+		countdown-=dtSecs
+	elif countdown < 0:
+		sp6.attachShape(shape5)
+		sp7.attachShape(shape4)
+		countdown = 0
+		
 
 @window.event
 def on_draw():

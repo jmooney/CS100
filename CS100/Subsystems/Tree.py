@@ -116,11 +116,11 @@ class TreeNodeModifier(_TreeNode):
 
 	_modifierName = None
 	_modifierCreator = None
-	
+
 	def __init__(self, baseNode, **kwArgs):
 		self._node = baseNode
-				
-			
+
+
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	def asType(self, modifierTypeName):

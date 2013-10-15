@@ -26,16 +26,19 @@ class Shape(object):
 
 	def __init__(self, vertices = [], vertexIndices = []):
 		super().__init__()
-		
-		self._owner = None
+
+		self._listeners = []
 		self._vertices = vertices
 		self._vertexIndices = vertexIndices
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	def setOwner(self, owner):
-		self._owner = owner
+	def addListener(self, listener):
+		self._listeners.append(listener)
+	def removeListener(self, listener):
+		self._listeners.remove(listener)
+	
 	def getVertices(self):
 		return self._vertices, self._vertexIndices
 
@@ -48,7 +51,7 @@ class TransformableShape(Shape, Transformable):
 	
 	def __init__(self, baseShape, transform=None):
 		super().__init__(baseShape._vertices[:], baseShape._vertexIndices[:])
-
+	
 		self._base = baseShape
 		self.setTransform(transform)
 
@@ -68,8 +71,8 @@ class TransformableShape(Shape, Transformable):
 			self._vertices[i] = vx*c - vy*s
 			self._vertices[i+1] = vx*s + vy*c
 		
-		if self._owner:
-			self._owner.updateVertices(self._vertices)
+		for listener in self._listeners:
+			listener.updateVertices(self._vertices)
 		
 		
 	def _onScale(self, dif):
@@ -81,10 +84,11 @@ class TransformableShape(Shape, Transformable):
 			self._vertices[i]*=dif.x
 			self._vertices[i+1]*=dif.y
 
-		if self._owner:
-			self._owner.updateVertices(self._vertices)
-
-
+		for listener in self._listeners:
+			listener.updateVertices(self._vertices)
+			
+		
+		
 #------------------------------------------------------#
 #	Creating Shapes
 

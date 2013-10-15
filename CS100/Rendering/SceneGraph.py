@@ -15,6 +15,8 @@
 
 # Imports
 import math
+import pyglet.graphics as pGraphics
+
 from CS100.Subsystems.Tree import TreeModifier
 from CS100.Space.TransformationGraph import TransformNode
 
@@ -66,42 +68,45 @@ class SceneNode(TransformNode):
 		glRotatef(math.degrees(self._rotateRads), 0, 0, 1)
 		glScalef(self._scale.x, self._scale.y, 1)
 		
-		self._batch.draw()
-		for scenePrimitive in self._scenePrimitives:
-			if scenePrimitive.isVisible():
-				scenePrimitive.draw()
+		if self._batch:
+			self._batch.draw()
 		
-		for child in self._node._children:
-			try:
-				sceneNode = child._getModifier(self._modifierName)
-				if sceneNode._visible:
-					sceneNode._draw()
-			except KeyError:
-				pass
-			
+		for sceneNode in self.getChildren():
+			if sceneNode._visible:
+				sceneNode._draw()
+
 		glPopMatrix()
 
 
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	def freeze(self):
+		self._frozen = True
+	def unfreeze(self):
+		self._frozen = False
+	
+	'''	Consider 'freeze decorators' '''
 	def batchSubTree(self):
-		return
-		
 		for child in self.getChildren():
 			for primitive in child._getSubTreePrimitives():
 				primitive.setBatch(self._batch)
 			child.freeze()
-					
+	
+	def _getSubTreePrimitives(self):
+		prims = self._primitives
+		for child in self.getChildren():
+			prims.extend(child._getSubTreePrimitives())
+		return prims
+		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def addScenePrimitive(self, obj):
-		self._scenePrimitives.append(obj)
+
+	def addScenePrimitive(self, primitive):
 		if not self._batch:
-			self._batch = Batch()
-		self._scenePrimitives.setBatch(self._batch)
-		
-	def removeScenePrimitive(self, obj):
-		self._scenePrimitives.remove(obj)
-		self._scenePrimitives.setBatch(None)
-		
+			self._batch = pGraphics.Batch()
+		self._scenePrimitives.append(primitive)		
+		primitive.setBatch(self._batch)
+
+	def removeScenePrimitive(self, primitive):
+		self._scenePrimitives.remove(primitive)
+		primitive.setBatch(None)

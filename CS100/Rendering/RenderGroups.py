@@ -13,7 +13,7 @@
 
 # Imports
 from pyglet.gl import (glBindTexture, glEnable, glDisable, GL_TEXTURE_2D)
-from pyglet.graphics import Group
+from pyglet.graphics import (Batch, Group)
 
 
 #-----------------------------------------------#
@@ -55,3 +55,9 @@ class TextureGroup(Group):
 	
 	def setTexture(self, texture):
 		self._texture = texture
+
+		
+#-----------------------------------------------#
+#	Create Null Group and Batch
+
+NullBatch = Batch()
