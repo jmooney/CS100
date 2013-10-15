@@ -9,7 +9,7 @@
 
 	Description:
 		Converts basic vertex data into a drawable object
-		Vertex data is pipelined from a dataSrc object
+		Vertex data is pipelined from a shape object
 '''
 
 # Imports
@@ -26,11 +26,11 @@ import CS100.Rendering.Color as Color
 
 class ScenePrimitive(SceneObject):
 	
-	def __init__(self, sceneNode=None, dataSrc=None, **kwArgs):
+	def __init__(self, sceneNode=None, shape=None, **kwArgs):
 		super().__init__(sceneNode)
 		
 		self._colors = None
-		self._dataSrc = None
+		self._shape = None
 		self._vertexList = None
 		
 		self._group = getDictValue(kwArgs, pGraphics.null_group, ['g', 'group'])
@@ -39,9 +39,8 @@ class ScenePrimitive(SceneObject):
 		self._drawStyle = getDictValue(kwArgs, GL_TRIANGLES, ['ds', 'drawStyle'])
 		self._arrayListArgs = kwArgs.get('arrayListArgs', [])
 		
-		if dataSrc:
-			self.attachSrc(dataSrc)
-	
+		if shape:
+			self.attachShape(shape)
 	
 	def __del__(self):
 		if self._vertexList:
@@ -59,11 +58,12 @@ class ScenePrimitive(SceneObject):
 			self._group.unset_state()
 			
 
-	def attachSrc(self, dataSrc):
-		self.detachSrc()
-		self._dataSrc = dataSrc
+	def attachShape(self, shape):
+		self.detachShape()
+		self._shape = shape
+		self._shape.setOwner(self)
 
-		vertices, vertexIndices = self._dataSrc.getVertices()
+		vertices, vertexIndices = self._shape.getVertices()
 		numVerts = int(len(vertices)/2)
 		
 		if not self._colors:
@@ -76,11 +76,22 @@ class ScenePrimitive(SceneObject):
 					('c3B', self._colors),  *self._arrayListArgs)
 
 			
-	def detachSrc(self):
-		if self._dataSrc:
+	def detachShape(self):
+		if self._shape:
 			self._vertexList.delete()
 			self._vertexList = None
+			self._shape.setOwner(None)
+			self._shape = None
 	
+	
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
+	def updateVertices(self, newVertices, startIndex=0, endIndex=None):
+		vertices, _ = self._shape.getVertices()
+		if not endIndex:
+			endIndex = len(vertices)
+		self._vertexList.vertices[startIndex:endIndex] = vertices
+		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -94,33 +105,15 @@ class ScenePrimitive(SceneObject):
 	def setColor(self, color):
 		self._color = color
 		self._colors = list(color*self._numVerts)
+		self._vertexList.colors=self._colors
 	def setColors(self, colors):
 		self._color = colors
 		for i in range(len(colors)):
 			self._colors[i] = colors[i]
-			#self._vertexList.colors[i] = colors[i]
+			self._vertexList.colors[i] = colors[i]
 			
 	def setTexCoords(self, txCordFmt):
 		self._vertexList.tex_coords = txCordFmt
-	
-
-
-
-#-----------------------------------------------------#
-
-class VertexDataSource(object):
-
-	def __init__(self, vertices = [], vertexIndices = []):
-		super().__init__()
-		
-		self._vertices = vertices
-		self._vertexIndices = vertexIndices
-
-
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-	def getVertices(self):
-		return self._vertices, self._vertexIndices
-	def getDrawData(self):
-		return []
+	def getShape(self):
+		return self._shape
 

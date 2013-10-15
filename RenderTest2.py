@@ -54,12 +54,20 @@ rm.registerExtension(".anim", "anim", ["anim"], Animation)
 
 #	Create Objects
 sprite1 = Sprite(rm.request("CharizardEvolve.png"), sceneGraph.newNode())
+sprite2 = Sprite(rm.request("CharizardEvolve.anim"), sceneGraph.newNode(t=vec(0, 200)))
+sprite3 = Sprite(rm.request("PShip.anim"), sceneGraph.newNode(t=vec(0, -200)))
+
+sprite2.getAnimation().setState("Looping")
+sprite3.getAnimation().setState("Looping")
+
 RenderGroups.Enable2DTexGroup.set_state()
 
 #	Define Funcs
 
 def update(dt):
 	sprite1.update(dt)
+	sprite2.update(dt)
+	sprite3.update(dt)
 
 @window.event
 def on_draw():

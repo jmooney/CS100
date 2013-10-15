@@ -52,6 +52,7 @@ class SceneNode(TransformNode):
 		self._modifierName = 'SceneNode'
 		self._modifierCreator = SceneNode
 
+		self._batch = None
 		self._visible = True
 		self._scenePrimitives = []
 		
@@ -65,6 +66,7 @@ class SceneNode(TransformNode):
 		glRotatef(math.degrees(self._rotateRads), 0, 0, 1)
 		glScalef(self._scale.x, self._scale.y, 1)
 		
+		self._batch.draw()
 		for scenePrimitive in self._scenePrimitives:
 			if scenePrimitive.isVisible():
 				scenePrimitive.draw()
@@ -82,9 +84,24 @@ class SceneNode(TransformNode):
 
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	def batchSubTree(self):
+		return
+		
+		for child in self.getChildren():
+			for primitive in child._getSubTreePrimitives():
+				primitive.setBatch(self._batch)
+			child.freeze()
+					
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	
 	def addScenePrimitive(self, obj):
 		self._scenePrimitives.append(obj)
+		if not self._batch:
+			self._batch = Batch()
+		self._scenePrimitives.setBatch(self._batch)
+		
 	def removeScenePrimitive(self, obj):
 		self._scenePrimitives.remove(obj)
-		
+		self._scenePrimitives.setBatch(None)
 		

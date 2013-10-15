@@ -11,10 +11,10 @@
 		- Create one underlying tree graph structure, where each 'Graph' provides an interface of functionality
 		- Allow for multiple types of graphs such as MessageListener etc.
 		
-	3. Refactor OpenGL State Groups
+	3. HOLD - Refactor OpenGL State Groups
 		- Create dynamic group-creation and single-referencing system
 
-	5. Scene Object and Primitive Resizing
+	5. COMPLETED - Scene Object and Primitive Resizing
 		- Exactly what it says
 		
 	4. COMPLETED - Clean Comments/Documentation:
@@ -27,17 +27,19 @@
 		- Remove 'localPos' in LineDrawing
 		- Construct the line horizontally, and rotate the node to the desired position
 
-	7. Refactor parent-child drawing dependencies
+	7. COMPLETED - Refactor parent-child drawing dependencies
 		- If a node parents another and wishes to take control of child node drawing operations
 		- Ex: Sprite and its SceneObject representation
 		
-	8. Refactor Animation to include 'default' options
+	8. CANCELED - Refactor Animation to include 'default' options
 		- What do you think?
 
-	9. Refactor SceneObject and DataSrc:
-		- SceneObject should only function on DataSrc objects
-		- DataSrc should be extended to include custom objects
-		- SceneObject should automatically update the vertex-lists if the dataSrc updates
+	9. COMPLETED - Refactor SceneObject and DataSrc:
+		- SceneObject should only function on DataSrc objects - CHECK
+		- DataSrc should be extended to include custom objects - CHECK
+		- SceneObject should automatically update the vertex-lists if the dataSrc updates - CHECK
 	
 	10. COMPLETED - Refactor file dependences/structure:
 		- Relative imports and the like!
+		
+	11. Refactor TransformNode such that on removal, transforms revert to 'normalized' setup.

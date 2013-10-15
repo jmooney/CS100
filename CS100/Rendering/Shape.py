@@ -27,12 +27,15 @@ class Shape(object):
 	def __init__(self, vertices = [], vertexIndices = []):
 		super().__init__()
 		
+		self._owner = None
 		self._vertices = vertices
 		self._vertexIndices = vertexIndices
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	def setOwner(self, owner):
+		self._owner = owner
 	def getVertices(self):
 		return self._vertices, self._vertexIndices
 
@@ -51,13 +54,11 @@ class TransformableShape(Shape, Transformable):
 
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def _onTranslation(self, dif):
-		pass
-		
 		
 	def _onRotation(self, dif):
 		super()._onRotation(dif)
+		if dif==0:
+			return
 		
 		c=math.cos(dif);	s=math.sin(dif)
 		for i in range(0, len(self._vertices), 2):
@@ -65,38 +66,46 @@ class TransformableShape(Shape, Transformable):
 			vy = self._vertices[i+1]
 			
 			self._vertices[i] = vx*c - vy*s
-			self._vertices[i+1] = vx*s + vy*c		
+			self._vertices[i+1] = vx*s + vy*c
+		
+		if self._owner:
+			self._owner.updateVertices(self._vertices)
 		
 		
 	def _onScale(self, dif):
 		super()._onScale(dif)
+		if dif.x==1 and dif.y==1:
+			return
 		
 		for i in range(0, len(self._vertices), 2):
 			self._vertices[i]*=dif.x
 			self._vertices[i+1]*=dif.y
 
+		if self._owner:
+			self._owner.updateVertices(self._vertices)
 
 
 #------------------------------------------------------#
 #	Creating Shapes
 
-def makeCircle(numDivisions=12):
+def makeCircle(numDivisions=24):
 	
-	vertices 		= []
+	vertices 		= [0, 0]
 	currentAngle 	= 0.0
 	totRadians 	= 2*math.pi
 	angleStep 		= totRadians/numDivisions
 	
 	while currentAngle <= totRadians:
-		x = math.cos(currentAngle)
-		y = math.sin(currentAngle)
+		x = round(math.cos(currentAngle), 8)
+		y = round(math.sin(currentAngle), 8)
 		
 		vertices.append(x)
 		vertices.append(y)
 		
 		currentAngle += angleStep
 	
-	return Shape(vertices, range(len(vertices)))
+	numVerts = int(len(vertices)/2)
+	return Shape(vertices, list(range(numVerts)))
 	
 
 def getRect(width, height):

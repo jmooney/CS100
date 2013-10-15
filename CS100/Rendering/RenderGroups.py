@@ -49,7 +49,6 @@ class TextureGroup(Group):
 	
 	def set_state(self):
 		glBindTexture(self._texture.target, self._texture.id)
-		print("Binding Texture: ", self._texture.id)
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

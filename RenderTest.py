@@ -13,7 +13,7 @@
 
 # Imports
 import pyglet
-from pyglet.gl import GL_QUADS
+from pyglet.gl import (GL_QUADS, GL_TRIANGLE_FAN)
 
 from CS100.Rendering import Shape
 from CS100.Math.Vector import vec
@@ -40,23 +40,31 @@ renderer = Renderer(winDimensions, sceneGraph)
 
 
 #	Create Objects
-shape1 = Shape.Rectangle
-shape2 = Shape.getRect(20, 30)
-shape2.getTransform().rotate(1)
-shape3 = Shape.Shape([-.1, 0, -.1, 1, -.5, 1, -.5, 1.2, .5, 1.2, .5, 1.0, .1, 1.0, .1, 0], [0, 1, 6, 7, 2, 3, 4, 5])
+tempNode = sceneGraph.newNode(t=vec(250, 0))
 
-sp1 = ScenePrimitive(sceneGraph.newNode(t=vec(-100, 0)), shape1, color=Color.Red, drawStyle=GL_QUADS)
-sp2 = ScenePrimitive(sceneGraph.newNode(t=vec(100, 0), s=vec(20, 30)), shape1, color=Color.Green, drawStyle=GL_QUADS)
-sp3 = ScenePrimitive(sceneGraph.newNode(), shape2, color=Color.Purple, drawStyle=GL_QUADS)
-sp4 = ScenePrimitive(sp3.getSceneNode().createChild(s=vec(200, 200)), shape3, drawStyle=GL_QUADS)
-sp4.setColors(Color.Red*4 + Color.Green*4)
+shape1 = Shape.Circle
+shape2 = Shape.getRect(50, 70)
+
+shape3 = Shape.getRect(50, 70)
+shape3.removeTransform()
+shape3.setTransform(tempNode.createChild())
+
+shape4 = Shape.Shape([-.1, 0, -.1, 1, -.5, 1, -.5, 1.2, .5, 1.2, .5, 1.0, .1, 1.0, .1, 0], [0, 1, 6, 7, 2, 3, 4, 5])
+
+sp1 = ScenePrimitive(sceneGraph.newNode(t=vec(-250, 0), s=vec(50, 50)), shape1, color=Color.Red, drawStyle=GL_TRIANGLE_FAN)
+sp2 = ScenePrimitive(sceneGraph.newNode(t=vec(-100, 0), s=vec(50, 50)), shape1, color=Color.Green, drawStyle=GL_TRIANGLE_FAN)
+sp3 = ScenePrimitive(sceneGraph.newNode(t=vec(100, 0)), shape2, color=Color.Purple, drawStyle=GL_QUADS)
+sp4 = ScenePrimitive(tempNode, shape3, color=Color.Orange, drawStyle=GL_QUADS)
+
+sp5 = ScenePrimitive(sceneGraph.newNode(t=vec(0, 200), s=vec(50, 50)), shape4, drawStyle=GL_QUADS)
+sp5.setColors(Color.Blue*4 + Color.Teal*4)
 
 
 #	Define Funcs
 
 def update(dt):
-	sp2.rotate(.01)
-	sp3.rotate(.01)
+	sp3.scale2f(1.001, 1.001)
+	sp4.scale2f(1.001, 1.001)
 
 @window.event
 def on_draw():

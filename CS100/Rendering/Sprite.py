@@ -55,6 +55,8 @@ class Sprite(SceneObject):
 	def update(self, dt):
 		if self._animation and self._animation.update(dt):
 			self._texture = self._animation.getImage().get_texture()
+			self._scenePrimitive.getShape().setScale2f(self._texture.width, self._texture.height)
+			self._scenePrimitive.setTexCoords(self._texture.tex_coords)
 
 
 	
