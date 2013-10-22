@@ -14,7 +14,7 @@
 
 # Imports
 from ..Vector import vec
-from CS100.Tools import getDictValue
+from CS100.Tools.Funcs import getDictValue
 
 
 #------------------------------------------------------#

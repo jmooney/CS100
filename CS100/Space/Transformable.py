@@ -13,7 +13,7 @@
 '''
 
 # Imports
-from CS100.Tools import getDictValue
+from CS100.Tools.Funcs import getDictValue
 from CS100.Math.Vector import vec
 
 

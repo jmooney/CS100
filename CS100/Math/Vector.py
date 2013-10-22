@@ -16,7 +16,7 @@ from math import sqrt
 from math import pow
 from math import acos
 
-from CS100.Tools import *
+from CS100.Tools.Funcs import *
 
 
 '''

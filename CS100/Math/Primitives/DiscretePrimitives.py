@@ -14,7 +14,7 @@
 
 # Imports
 import math
-from CS100.Tools import twoPi
+from CS100.Tools.Constants import twoPi
 from GeometricPrimitives import *
 from CS100.Rendering.SceneObject import VertexDataSource
 from pyglet.gl import (GL_TRIANGLE_FAN, GL_QUADS, GL_TRIANGLES, GL_LINES,  GL_POINTS)

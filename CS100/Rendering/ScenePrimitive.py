@@ -17,8 +17,9 @@ import pyglet.graphics as pGraphics
 from pyglet.gl import GL_TRIANGLES
 
 from .RenderGroups import NullBatch
-from CS100.Tools import getDictValue
+from CS100.Tools.Funcs import getDictValue
 from .SceneObject import SceneObject
+from .SceneGraph import spFreezeable
 import CS100.Rendering.Color as Color
 
 
@@ -50,14 +51,17 @@ class ScenePrimitive(SceneObject):
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	@spFreezeable
 	def setBatch(self, batch):
 		if not batch:
 			batch = getDefaultBatch()
 		if self._vertexList:
+			print("Before", self._vertexList.get_domain())
 			self._batch.migrate(self._vertexList, self._drawStyle, self._group, batch)
+			print("After", self._vertexList.get_domain())
 		self._batch = batch
 			
-
+	
 	def attachShape(self, shape):
 		self.detachShape()
 		self._shape = shape
@@ -90,6 +94,7 @@ class ScenePrimitive(SceneObject):
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
+	@spFreezeable
 	def setSceneNode(self, sceneNode):
 		retVal = super().setSceneNode(sceneNode)
 		if self._sceneNode:

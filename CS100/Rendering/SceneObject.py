@@ -22,6 +22,7 @@ class SceneObject(Transformable):
 		super().__init__()
 
 		self._visible = True
+		self._sceneNode = None
 		self.setSceneNode(sceneNode)
 			
 

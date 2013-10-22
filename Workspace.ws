@@ -51,7 +51,10 @@
                 </Folder>
                 <File name="CS100\Tests\TreeTest.py" />
             </Folder>
-            <File name="CS100\Tools.py" />
+            <Folder name="Tools">
+                <File name="CS100\Tools\Errors.py" />
+                <File name="CS100\Tools\Funcs.py" />
+            </Folder>
             <File name="CS100\__init__.py" />
         </Folder>
         <File name="RenderTest.py" />
