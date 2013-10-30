@@ -20,7 +20,7 @@
 	4. COMPLETED - Clean Comments/Documentation:
 		- Establish convention for commentation in classes
 
-	5. Create batchSubNodes() within Scene Graph
+	5. HOLD (not supported in pyglet atm) - Create batchSubNodes() within Scene Graph
 		- Allows a node to permanently batch the rendering aspects of lower nodes for optimization
 
 	6. Performance optimizations/tests.
