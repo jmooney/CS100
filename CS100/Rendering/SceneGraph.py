@@ -121,8 +121,8 @@ class SceneNode(TransformNode):
 		for child in self.getChildren():
 			prims.extend(child._getSubTreePrimitives())
 		return prims
-		
-		
+
+
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	@snFreezeable
