@@ -109,3 +109,4 @@ class Transformable(object):
 		self._lastTransformation[0] = True;	self._lastTransformation[1][1] = dif
 	def _onScale(self, dif):
 		self._lastTransformation[0] = True;	self._lastTransformation[1][2] = dif
+

@@ -1,4 +1,4 @@
-	
+
 '''
 
 	Project:	CS100
@@ -30,7 +30,7 @@ class TransformationGraph(TreeModifier):
 	
 	def __init__(self, baseTree):
 		self._nodeModifierName = 'TransformNode'
-		self._nodeModifierCreator = TransformNode		
+		self._nodeModifierCreator = TransformNode
 		super().__init__(baseTree)
 
 		
@@ -57,7 +57,7 @@ class TransformNode(TreeNodeModifier):
 		self._rotateRads 	= getDictValue(kwArgs, 0.0, ['r', 'rotate'])
 		self._scale			= getDictValue(kwArgs, vec(1,1), ['s', 'scale'])
 		self._gTrans		= self._translate.copy()
-		self._gRotRads      = self._rotateRads
+		self._gRotRads    = self._rotateRads
 		self._gScale		= self._scale.copy()
 	
 		'''	Transformable Data	'''
@@ -134,52 +134,52 @@ class TransformNode(TreeNodeModifier):
 
 	def _removeTransformable(self, d):
 		self._transformables.remove(d)
-		
-	
+
+
 	''''''''''''''''''''''''''''''''''''''''''''''''
-	
+
 	def _translateDependents(self):
 		parent = self.getParent()
 		
 		pTrans = vec()
 		if parent:
 			pTrans = parent.getTranslation()
-			
+	
 		newTranslate = self._translate + pTrans
 		oldTranslate = self._gTrans.copy()
 		if(newTranslate != oldTranslate):	
 			self._gTrans = newTranslate
-			
+		
 			for transformable in self._transformables:
 				transformable._onTranslation(newTranslate-oldTranslate)
 			for child in self.getChildren():
 				child._translateDependents()
 	def _rotateDependents(self):
 		parent = self.getParent()
-		
+	
 		pRots = 0.0
 		if parent:
 			pRots = parent.getRotation()
-			
+	
 		newRot = self._rotateRads + pRots
 		oldRot = self._gRotRads
 		if(newRot != oldRot):	
 			self._gRotRads = newRot
-			
+	
 			for transformable in self._transformables:
 				transformable._onRotation(newRot-oldRot)
 			for child in self.getChildren():
 				child._rotateDependents()
 	def _scaleDependents(self):
 		parent = self.getParent()
-		
+	
 		pScale = vec(1.0, 1.0)
 		if parent:
 			pScale = parent.getScale()
-			
+	
 		newScale = self._scale * pScale
 		oldScale = self._gScale
-		
+	
 		if(newScale != oldScale):
 			self._gScale = newScale
 			
@@ -187,7 +187,7 @@ class TransformNode(TreeNodeModifier):
 				transformable._onScale(newScale/oldScale)
 			for child in self.getChildren():
 				child._scaleDependents()
-				
+
 
 	def _updateDependents(self):
 		self._translateDependents()
