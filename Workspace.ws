@@ -27,8 +27,8 @@
                     <File name="CS100\Subsystems\Resources\Resource.py" />
                 </Folder>
                 <File name="CS100\Subsystems\Tree.py" />
-                <File name="CS100\Subsystems\EventGraph.py" />
                 <File name="CS100\Subsystems\ResourceManager.py" />
+                <File name="CS100\Subsystems\Events.py" />
             </Folder>
             <Folder name="Tests">
                 <Folder name="old">
