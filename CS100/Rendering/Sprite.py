@@ -15,7 +15,7 @@
 # Imports
 from pyglet.gl import GL_QUADS
 
-from CS100.Rendering import Shape
+from CS100.Math import Shape
 from .SceneObject import SceneObject
 from CS100.Rendering import RenderGroups
 from .AnimationState import AnimationState

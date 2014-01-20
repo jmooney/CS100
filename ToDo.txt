@@ -1,7 +1,21 @@
-
+	
 	Author:	John Mooney
 	Project:	CS100
-	
+
+
+Ver 2.00:
+
+	1. Create Collision Detection System
+		A) Shape/AABB collision mechanisms
+		B) AABB Prune/Sweep Broad Phase
+		C) Circle v. Circle
+		D) GJK Narrow Phase
+
+
+
+
+
+Ver 1.00:
 
 	1. COMPLETED - Refactor the __init__, __initP__, and __initC__ structure:
 		- Ideally each class has one __init__ method
@@ -23,23 +37,19 @@
 	5. HOLD (not supported in pyglet atm) - Create batchSubNodes() within Scene Graph
 		- Allows a node to permanently batch the rendering aspects of lower nodes for optimization
 
-	6. Performance optimizations/tests.
-		- Remove 'localPos' in LineDrawing
-		- Construct the line horizontally, and rotate the node to the desired position
-
-	7. COMPLETED - Refactor parent-child drawing dependencies
+	6. COMPLETED - Refactor parent-child drawing dependencies
 		- If a node parents another and wishes to take control of child node drawing operations
 		- Ex: Sprite and its SceneObject representation
 		
-	8. CANCELED - Refactor Animation to include 'default' options
+	7. CANCELED - Refactor Animation to include 'default' options
 		- What do you think?
 
-	9. COMPLETED - Refactor SceneObject and DataSrc:
+	8. COMPLETED - Refactor SceneObject and DataSrc:
 		- SceneObject should only function on DataSrc objects - CHECK
 		- DataSrc should be extended to include custom objects - CHECK
 		- SceneObject should automatically update the vertex-lists if the dataSrc updates - CHECK
 	
-	10. COMPLETED - Refactor file dependences/structure:
+	9. COMPLETED - Refactor file dependences/structure:
 		- Relative imports and the like!
 		
-	11. Refactor TransformNode such that on removal, transforms revert to 'normalized' setup.
+	10. Refactor TransformNode such that on removal, transforms revert to 'normalized' setup.

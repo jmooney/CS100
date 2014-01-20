@@ -2,13 +2,13 @@
 '''
 
 	Project:	CS100
-	Title:		TreeTest
+	Title:		EventTest
 
 	Author:		John Mooney
-	Date:		1/23/2013
+	Date:		1/16/2014
 
 	Description:
-		Entry point for running a debug CS100 version - Tree
+		Entry point for running a debug CS100 version - Event
 '''
 
 # Imports
@@ -16,6 +16,7 @@ import pyglet
 
 from CS100.Subsystems.Tree import Tree
 from CS100.Rendering.SceneGraph import SceneGraph
+from CS100.Subsystems.EventGraph import EventGraph
 from CS100.Space.TransformationGraph import TransformationGraph
 
 from pyglet.graphics import (GL_LINES, GL_TRIANGLES)
@@ -29,6 +30,7 @@ winDimensions 	= [800, 600]
 
 baseTree = Tree()
 sceneGraph = SceneGraph(baseTree)
+eventGraph = EventGraph(baseTree)
 transformationGraph = TransformationGraph(baseTree)
 
 

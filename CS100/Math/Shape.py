@@ -38,7 +38,10 @@ class Shape(object):
 		self._listeners.append(listener)
 	def removeListener(self, listener):
 		self._listeners.remove(listener)
-	
+
+				
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 	def getVertices(self):
 		return self._vertices, self._vertexIndices
 
@@ -86,9 +89,9 @@ class TransformableShape(Shape, Transformable):
 
 		for listener in self._listeners:
 			listener.updateVertices(self._vertices)
-			
-		
-		
+
+
+
 #------------------------------------------------------#
 #	Creating Shapes
 

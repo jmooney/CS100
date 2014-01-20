@@ -31,6 +31,7 @@ class ScenePrimitive(SceneObject):
 	def __init__(self, sceneNode=None, shape=None, **kwArgs):
 		self._colors = None
 		self._shape = None
+		self._numVertes = 0
 		self._vertexList = None
 		
 		self._batch = NullBatch
@@ -68,10 +69,10 @@ class ScenePrimitive(SceneObject):
 		self._shape.addListener(self)
 
 		vertices, vertexIndices = self._shape.getVertices()
-		numVerts = int(len(vertices)/2)
-		self._colors = list(self._color * numVerts)
+		self._numVerts = int(len(vertices)/2)
+		self._colors = list(self._color * self._numVerts)
 		
-		self._vertexList = self._batch.add_indexed(numVerts, self._drawStyle, self._group, vertexIndices, ('v2f', vertices), \
+		self._vertexList = self._batch.add_indexed(self._numVerts, self._drawStyle, self._group, vertexIndices, ('v2f', vertices), \
 				('c3B', self._colors), *self._arrayListArgs)
 	
 			
