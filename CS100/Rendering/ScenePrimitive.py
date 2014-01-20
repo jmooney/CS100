@@ -17,16 +17,18 @@ import pyglet.graphics as pGraphics
 from pyglet.gl import GL_TRIANGLES
 
 from .RenderGroups import NullBatch
-from CS100.Tools.Funcs import getDictValue
-from .SceneObject import SceneObject
-from .SceneGraph import spFreezeable
 import CS100.Rendering.Color as Color
+from CS100.Math.Shape import Shape
+from .SceneGraph import spFreezeable
+from .SceneObject import SceneObject
+from CS100.Tools.Funcs import getDictValue
+from CS100.Subsystems.Events import EventListener
 
 
 #------------------------------------------------------#
 #	Scene Primitive
 
-class ScenePrimitive(SceneObject):
+class ScenePrimitive(SceneObject, EventListener):
 	
 	def __init__(self, sceneNode=None, shape=None, **kwArgs):
 		self._colors = None
@@ -86,7 +88,11 @@ class ScenePrimitive(SceneObject):
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	def updateVertices(self, newVertices, startIndex=0, endIndex=None):
+	def processEvent(self, event):
+		if isinstance(event.source, Shape) and event.description == "UPDATE_VERTICES":
+			self.updateVertices(*event.data)
+			
+	def updateVertices(self, startIndex=0, endIndex=None):
 		vertices, _ = self._shape.getVertices()
 		if not endIndex:
 			endIndex = len(vertices)

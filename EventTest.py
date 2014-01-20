@@ -23,7 +23,7 @@ from CS100.Math.Shape import Shape, Circle
 from CS100.Rendering.Renderer import Renderer
 from CS100.Rendering.SceneGraph import SceneGraph
 from CS100.Rendering.ScenePrimitive import ScenePrimitive
-from CS100.Subsystems.EventGraph import EventGraph, EventListener
+from CS100.Subsystems.Events import *
 
 from pyglet.graphics import (GL_LINES, GL_TRIANGLES)
 
@@ -31,15 +31,15 @@ from pyglet.graphics import (GL_LINES, GL_TRIANGLES)
 #--------------------------------------------------------#
 #	DebugEventNode
 
-class DebugEventListener(EventListener):
+class DebugEventListener(EventListener, EventSource):
 
-	def __init__(self, eventNode, sceneNode, sendTime, broadcastTime, changeTime):
-		super().__init__(eventNode)
+	def __init__(self, sceneNode, sendTime, changeTime):
+		super().__init__()
+
 		self._scenePrimitive = ScenePrimitive(sceneNode, Circle, color = Color.Yellow, drawStyle = GL_TRIANGLE_FAN)
 		
 		self._timeElapsed = 0.01
 		self._sTime = sendTime
-		self._bTime = broadcastTime
 		self._cTime = changeTime
 		self._currentColor = 'Y'
 		
@@ -50,13 +50,9 @@ class DebugEventListener(EventListener):
 		self._timeElapsed+=dt
 		
 		if (self._timeElapsed % self._sTime < 0.015):
-			self.sendEvent(self._currentColor)
+			self.sendEvent(0, self._currentColor, "")
 			print("Sending " + self._currentColor + "...")
-			
-		if (self._timeElapsed % self._bTime < 0.015):
-			self.broadcastEvent(self._currentColor)
-			print("Broadcasting " + self._currentColor + "...")
-			
+
 		if (self._timeElapsed % self._cTime < 0.015):
 			print("Changing Color... ")
 			c = random.randint(0, 4)
@@ -82,7 +78,9 @@ class DebugEventListener(EventListener):
 				
 		self.processEvents()
 	
-	def processEvent(self, e):
+	def processEvent(self, event):
+		e = event.description
+		
 		if e=='Y':	
 			self._scenePrimitive.setColor(Color.Yellow)
 			self._currentColor = 'Y'
@@ -108,18 +106,11 @@ winDimensions 	= [800, 600]
 
 baseTree = Tree()
 sceneGraph = SceneGraph.activeGraph = SceneGraph(baseTree)
-eventGraph = EventGraph.activeGraph = EventGraph(baseTree)
 
 renderer = Renderer(winDimensions, sceneGraph)
 
 
 #-------------------------------------------------------#
-
-eventNode1 = eventGraph.newNode()
-eventNode2 = eventNode1.createChild()
-eventNode3 = eventNode1.createChild()
-eventNode4 = eventNode2.createChild()
-eventNode5 = eventNode3.createChild()
 
 sceneNode1 = sceneGraph.newNode(t=vec(0, 200), s=vec(30, 30))
 sceneNode2 = sceneGraph.newNode(t=vec(-100, 0), s=vec(30, 30))
@@ -127,11 +118,16 @@ sceneNode3 = sceneGraph.newNode(t=vec(100, 0), s=vec(30, 30))
 sceneNode4 = sceneGraph.newNode(t=vec(-200, -200), s=vec(30, 30))
 sceneNode5 = sceneGraph.newNode(t=vec(200, -200), s=vec(30, 30))
 
-eventListener1 = DebugEventListener(eventNode1, sceneNode1, 0,0,0)
-eventListener2 = DebugEventListener(eventNode2, sceneNode2, 0,0,0)
-eventListener3 = DebugEventListener(eventNode3, sceneNode3, 0,0,0)
-eventListener4 = DebugEventListener(eventNode4, sceneNode4, 5, 10, 3)
-eventListener5 = DebugEventListener(eventNode5, sceneNode5, 5, 7, 3)
+eventListener1 = DebugEventListener(sceneNode1, 0,0)
+eventListener2 = DebugEventListener(sceneNode2, 0,0)
+eventListener3 = DebugEventListener(sceneNode3, 0,0)
+eventListener4 = DebugEventListener(sceneNode4, 5, 3)
+eventListener5 = DebugEventListener(sceneNode5, 5, 3)
+
+eventListener5.addListener(eventListener3)
+eventListener4.addListener(eventListener2)
+eventListener3.addListener(eventListener1)
+eventListener2.addListener(eventListener1)
 
 
 def update(dt):

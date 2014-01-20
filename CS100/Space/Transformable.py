@@ -35,6 +35,7 @@ class Transformable(object):
 	''''''''''''''''''''''''''''''''''''''''''
 	
 	def update(self, dt):
+		super().update(dt)
 		if self._lastTransformation[0]:
 			self._onTransformation(self._lastTransformation[1])
 			

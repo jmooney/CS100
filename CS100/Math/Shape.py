@@ -14,6 +14,7 @@
 
 # Imports
 import math
+from CS100.Subsystems.Events import EventSource
 from CS100.Math.Vector import vec
 from CS100.Space.Transformable import Transformable
 from CS100.Space.TransformationGraph import TransformationGraph
@@ -22,22 +23,12 @@ from CS100.Space.TransformationGraph import TransformationGraph
 #------------------------------------------------------#
 #	Shape
 
-class Shape(object):
+class Shape(EventSource):
 
 	def __init__(self, vertices = [], vertexIndices = []):
 		super().__init__()
-
-		self._listeners = []
 		self._vertices = vertices
 		self._vertexIndices = vertexIndices
-		
-		
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	
-	def addListener(self, listener):
-		self._listeners.append(listener)
-	def removeListener(self, listener):
-		self._listeners.remove(listener)
 
 				
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -73,9 +64,7 @@ class TransformableShape(Shape, Transformable):
 			
 			self._vertices[i] = vx*c - vy*s
 			self._vertices[i+1] = vx*s + vy*c
-		
-		for listener in self._listeners:
-			listener.updateVertices(self._vertices)
+		self.sendEvent(0, "UPDATE_VERTICES", [])
 		
 		
 	def _onScale(self, dif):
@@ -86,10 +75,7 @@ class TransformableShape(Shape, Transformable):
 		for i in range(0, len(self._vertices), 2):
 			self._vertices[i]*=dif.x
 			self._vertices[i+1]*=dif.y
-
-		for listener in self._listeners:
-			listener.updateVertices(self._vertices)
-
+		self.sendEvent(0, "UPDATE_VERTICES", [])
 
 
 #------------------------------------------------------#
