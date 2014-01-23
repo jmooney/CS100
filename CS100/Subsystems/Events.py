@@ -61,6 +61,7 @@ class EventListener(object):
 	def __init__(self):
 		super().__init__()
 		self._eventQueue = queue.PriorityQueue()
+		self._eventHandlers = {}
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -69,11 +70,16 @@ class EventListener(object):
 		self._eventQueue.put_nowait(event)
 		
 	def processEvent(self, event):
-		pass
+		try:
+			self._eventHandlers[event.description](event.data)
+		except(KeyError):
+			pass
+	
 	def processEvents(self):
 		while not self._eventQueue.empty():
 			try:
 				self.processEvent(self._eventQueue.get_nowait())
 			except queue.Empty:
 				return
+		
 		

@@ -5,7 +5,12 @@
                 <File name="CS100\Math\Vector.py" />
                 <File name="CS100\Math\Shape.py" />
             </Folder>
-            <Folder name="Physics" />
+            <Folder name="Physics">
+                <Folder name="Collision">
+                    <File name="CS100\Physics\Collision\Collider.py" />
+                    <File name="CS100\Physics\Collision\CollisionWorld.py" />
+                </Folder>
+            </Folder>
             <Folder name="Rendering">
                 <File name="CS100\Rendering\AnimationState.py" />
                 <File name="CS100\Rendering\Camera.py" />
