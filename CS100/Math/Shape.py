@@ -30,12 +30,24 @@ class Shape(EventSource):
 		self._vertices = vertices
 		self._vertexIndices = vertexIndices
 
-				
+
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+	def getAABB(self):
+		left, right, top, bottom = 0
+		for v in self._vertices:
+			if v.x < left:
+				left = v.x
+			if v.x > right:
+				right = v.x
+			if v.y < bottom:
+				bottom = v.y
+			if v.y > top:
+				top = v.y
+		return left, right, top, bottom
+		
 	def getVertices(self):
 		return self._vertices, self._vertexIndices
-
 
 
 #------------------------------------------------------#
@@ -85,7 +97,7 @@ def makeCircle(numDivisions=24):
 	
 	vertices 		= [0, 0]
 	currentAngle 	= 0.0
-	totRadians 	= 2*math.pi
+	totRadians 		= 2*math.pi
 	angleStep 		= totRadians/numDivisions
 	
 	while currentAngle <= totRadians:
@@ -99,7 +111,7 @@ def makeCircle(numDivisions=24):
 	
 	numVerts = int(len(vertices)/2)
 	return Shape(vertices, list(range(numVerts)))
-	
+
 
 def getRect(width, height):
 	return TransformableShape(Rectangle, TransformationGraph.activeGraph.newNode(scale=vec(width, height)))

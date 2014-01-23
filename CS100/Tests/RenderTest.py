@@ -80,6 +80,14 @@ def update(dtSecs):
 		sp7.attachShape(shape4)
 		countdown = 0
 		
+	sp1.processEvents()
+	sp2.processEvents()
+	sp3.processEvents()
+	sp4.processEvents()
+	sp5.processEvents()
+	sp6.processEvents()
+	sp7.processEvents()
+		
 
 @window.event
 def on_draw():

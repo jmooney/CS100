@@ -50,7 +50,7 @@ class DebugEventListener(EventListener, EventSource):
 		self._timeElapsed+=dt
 		
 		if (self._timeElapsed % self._sTime < 0.015):
-			self.sendEvent(self._currentColor)
+			self.sendEvent(0, self._currentColor, "")
 			print("Sending " + self._currentColor + "...")
 
 		if (self._timeElapsed % self._cTime < 0.015):
@@ -79,7 +79,7 @@ class DebugEventListener(EventListener, EventSource):
 		self.processEvents()
 	
 	def processEvent(self, event):
-		e = event.data
+		e = event.description
 		
 		if e=='Y':	
 			self._scenePrimitive.setColor(Color.Yellow)
