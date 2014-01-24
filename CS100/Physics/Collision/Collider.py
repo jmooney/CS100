@@ -13,7 +13,8 @@
 
 
 # Imports
-
+from CS100.Space.Transformable import Transformable
+from CS100.Subsystems.Events import EventListener
 
 #------------------------------------------------------#
 #	Collider
@@ -39,4 +40,3 @@ class Collider(Transformable, EventListener):
 		pass
 		
 		
-	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

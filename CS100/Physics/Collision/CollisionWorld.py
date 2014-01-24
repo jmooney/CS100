@@ -23,13 +23,17 @@ class CollisionWorld(object):
 	def __init__(self):
 		super().__init__()
 		self._collisionLayers = {"Default":[]}
+		self._prevFrameCollisions = set()
 		
 		
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 			
 	def testCollisions(self):
 		possibleCollisionsPairList = self._AABBCollisionDetection()
-		collisionInfoList = self._GJKCollisionDetection(collisionPairList)
+		collisionPairList, collisionInfoList = self._GJKCollisionDetection(collisionPairList)
+		self._signalOffCollisions()
+		
+		self._prevFrameCollisions = set(collisionPairList)
 		return collisionInfoList
 
 		
@@ -52,11 +56,13 @@ class CollisionWorld(object):
 					
 					if self._testAABBCollision(shape1, shape2):
 						possibleCollisionsPairList.append( (shape1, shape2) )
+						self._signalCollision(shape1, shape2)
+						
 		return possibleCollisionsPairList
 		
 						
-	def _GJKCollisionDetection(collisionPairList):
-		return []
+	def _GJKCollisionDetection(possibleCollisionPairs):
+		return possibleCollisionPairs, [] 
 		
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -71,5 +77,19 @@ class CollisionWorld(object):
 		if centerDist.x < maxWidth or centerDist.y < maxHeight:
 			return True
 		return False
+
+	def _signalCollision(shape1, shape2):
+		if (shape1, shape2) not in self._prevFrameCollisions:
+			shape1.sendEvent(0, "ON_COLLISION", shape2)
+			shape2.sendEvent(0, "ON_COLLISION", shape1)
+		else:
+			self._prevFrameCollisions.remove((shape1, shape2))
+			shape1.sendEvent(0, "DURING_COLLISION", shape2)
+			shape1.sendEvent(0, "DURING_COLLISION", shape1)
+			
+	def _signalOffCollisions(self):
+		for (shape1, shape2) in self._prevFrameCollisions:
+			shape1.sendEvent(0, "OFF_COLLISION", shape2)
+			shape2.sendEvent(0, "OFF_COLLISION", shape1)
 
 
